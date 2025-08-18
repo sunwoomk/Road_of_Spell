@@ -64,23 +64,24 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
         _damage = damage;
     }
 
-    public void OnPointerDown(PointerEventData eventData)
+    public void OnPointerDown(PointerEventData eventData) // 처음 터치했을 때
     {
         Debug.Log("OnPointerDown");
         _isDragging = true;
         UpdateSpellTilePosition(eventData);
     }
 
-    public void OnDrag(PointerEventData eventData)
+    public void OnDrag(PointerEventData eventData) //드래그 하는 도중일 때
     {
         Debug.Log("OnDrag");
         if (_isDragging)
         {
+            //스펠을 시전할 중심 좌표 업데이트
             UpdateSpellTilePosition(eventData);
         }
     }
 
-    public void OnPointerUp(PointerEventData eventData)
+    public void OnPointerUp(PointerEventData eventData) //손을 땠을 때
     {
         Debug.Log("OnPointerUp");
         if (_isDragging)
@@ -92,17 +93,20 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
 
     private void UpdateSpellTilePosition(PointerEventData eventData)
     {
-        Vector3 screenPos = eventData.position;
-        screenPos.z = Mathf.Abs(Camera.main.transform.position.z);
+        // 화면 좌표를 월드 좌표로 변환
         Vector3 worldPos = Camera.main.ScreenToWorldPoint(eventData.position);
         Vector2 worldPos2D = new Vector2(worldPos.x, worldPos.y);
 
+        //Ray를 쏴서 Collider체크
         Collider2D hitCollider = Physics2D.OverlapPoint(worldPos2D);
+
+        //만약 콜라이더의 태그가 "Tile" 일 때 
         if (hitCollider != null && hitCollider.CompareTag("Tile"))
         {
             Tile tileComp = hitCollider.GetComponent<Tile>();
             if (tileComp != null)
             {
+                //스펠을 시전할 중심 좌표를 현재 Ray가 가리키는 타일의 좌표로 변경
                 Vector2Int tilePos = tileComp.TilePos;
                 TileManager.Instance.SetCurSpellTilePos(tilePos);
                 _center = tilePos;

@@ -3,12 +3,13 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static UnityEditor.PlayerSettings;
 
 public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
     private Player _player;
     private Spell _spell;
-    private Canvas _uiCanvas;
+    [SerializeField] private Canvas _uiCanvas;
 
     private float _damage;
     private int _skillLevel = 0;
@@ -28,9 +29,8 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
     private void Start()
     {
         _spell = Resources.Load<Spell>("Spells/None/FastStrike");
+        //_spell = Resources.Load<Spell>("Spells/Electric/ThunderStrike");
         LoadSpellData(_spell);
-
-
     }
 
     public void SetPlayer()
@@ -126,28 +126,46 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
             _spellHitPositions.Add(hitPos);
         }
 
-        foreach (Vector2Int pos in _spellHitPositions)
+        if(_spell.effectType == "Single")
         {
-            Vector3 spawnWorldPos = TileManager.Instance.GetTileWorldPosition(pos);
+            Vector3 spawnWorldPos = TileManager.Instance.GetTileWorldPosition(_center);
             ShowEffect(spawnWorldPos);
-            Debug.Log($"Casting spell at position: {pos} with damage: {_damage} and cost: {_cost}");
+        }
+        else if(_spell.effectType == "MultyTarget")
+        {
+            foreach (Vector2Int pos in _spellHitPositions)
+            {
+                Vector3 spawnWorldPos = TileManager.Instance.GetTileWorldPosition(pos);
+                ShowEffect(spawnWorldPos);
+            }
         }
     }
 
-    private void ShowEffect(Vector3 position)
+    private void ShowEffect(Vector3 worldPos) // ÀÌÆåÆ® È£Ãâ ÇÔ¼ö
     {
+        //string effectName = "ThunderStrike";
         string effectName = "FastStrike";
-        GameObject effectPrefab = Resources.Load<GameObject>("Prefabs/Effects/" + effectName);
-        if (effectPrefab == null)
-        {
-            Debug.LogError($"Effect prefab '{effectName}' not found!");
-            return;
-        }
-        if (effectPrefab != null)
-        {
-            //Debug.Log($"Spawning effect at position: {position}");
-            GameObject effect = Instantiate(effectPrefab, position, Quaternion.identity);
-            Destroy(effect, 2f);
-        }
+        //GameObject effectPrefab = Resources.Load<GameObject>("Prefabs/Effects/Electric/" + effectName);
+        GameObject effectPrefab = Resources.Load<GameObject>("Prefabs/Effects/None/" + effectName);
+
+        Vector2 canvasPos = WorldToCanvasPosition(worldPos); // ¿ùµåÁÂÇ¥¸¦ Äµ¹ö½ºÁÂÇ¥·Î º¯È¯
+        GameObject effect = Instantiate(effectPrefab, _uiCanvas.transform);
+        effect.GetComponent<RectTransform>().anchoredPosition = canvasPos;
+        Destroy(effect, 2f);
+    }
+
+
+    private Vector2 WorldToCanvasPosition(Vector3 worldPos) // ¿ùµåÁÂÇ¥¸¦ Äµ¹ö½ºÁÂÇ¥·Î º¯È¯
+    {
+        Canvas canvas = _uiCanvas;
+        Vector2 screenPoint = Camera.main.WorldToScreenPoint(worldPos);
+        RectTransform canvasRect = canvas.GetComponent<RectTransform>();
+        Vector2 localPoint;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            canvasRect,
+            screenPoint,
+            canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : Camera.main,
+            out localPoint);
+        return localPoint;
     }
 }

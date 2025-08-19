@@ -12,4 +12,5 @@ public class Spell : ScriptableObject
     public float damageRatio;
     public int cost;
     public Vector2Int[] range;
+    public string effectType;
 }

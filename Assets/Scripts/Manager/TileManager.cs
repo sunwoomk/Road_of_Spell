@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class TileManager : MonoBehaviour
 {
-    private readonly Vector2 _startTilePos = new Vector2(-4.0f, 4.4f);
+    public static readonly Vector2 StartTilePos = new Vector2(-6.0f, 3f);
 
-    private const int TileWidth = 10;
-    private const int TileHeight = 5;
-    private const float TileSize = 1.2f;
+    public const int TileWidth = 10;
+    public const int TileHeight = 5;
+    public const float TileSize = 1.2f;
 
     private Vector2Int _curSpellTilePos;
 
@@ -42,7 +42,7 @@ public class TileManager : MonoBehaviour
         {
             for (int x = 0; x < TileWidth; x++)
             {
-                Vector2 tilePos = _startTilePos + new Vector2(x * TileSize, -y * TileSize);
+                Vector2 tilePos = StartTilePos + new Vector2(x * TileSize, -y * TileSize);
                 Tile tile = Instantiate(tilePrefab, tilePos, Quaternion.identity).GetComponent<Tile>();
                 tile.SetTilePos(new Vector2Int(x, y));
             }
@@ -56,6 +56,6 @@ public class TileManager : MonoBehaviour
 
     public Vector3 GetTileWorldPosition(Vector2Int tilePos)
     {
-        return _startTilePos + new Vector2(tilePos.x * TileSize, -tilePos.y * TileSize);
+        return StartTilePos + new Vector2(tilePos.x * TileSize, -tilePos.y * TileSize);
     }
 }

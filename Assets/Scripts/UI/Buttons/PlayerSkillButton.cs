@@ -28,8 +28,8 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
 
     private void Start()
     {
-        _spell = Resources.Load<Spell>("Spells/None/FastStrike");
-        //_spell = Resources.Load<Spell>("Spells/Electric/ThunderStrike");
+        //_spell = Resources.Load<Spell>("Spells/None/FastStrike");
+        _spell = Resources.Load<Spell>("Spells/Electric/ThunderStrike");
         LoadSpellData(_spell);
     }
 
@@ -131,7 +131,7 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
             Vector3 spawnWorldPos = TileManager.Instance.GetTileWorldPosition(_center);
             ShowEffect(spawnWorldPos);
         }
-        else if(_spell.effectType == "MultyTarget")
+        else if(_spell.effectType == "Multy")
         {
             foreach (Vector2Int pos in _spellHitPositions)
             {
@@ -143,10 +143,10 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
 
     private void ShowEffect(Vector3 worldPos) // ÀÌÆåÆ® È£Ãâ ÇÔ¼ö
     {
-        //string effectName = "ThunderStrike";
-        string effectName = "FastStrike";
-        //GameObject effectPrefab = Resources.Load<GameObject>("Prefabs/Effects/Electric/" + effectName);
-        GameObject effectPrefab = Resources.Load<GameObject>("Prefabs/Effects/None/" + effectName);
+        string effectName = "ThunderStrike";
+        //string effectName = "FastStrike";
+        GameObject effectPrefab = Resources.Load<GameObject>("Prefabs/Effects/Electric/" + effectName);
+        //GameObject effectPrefab = Resources.Load<GameObject>("Prefabs/Effects/None/" + effectName);
 
         Vector2 canvasPos = WorldToCanvasPosition(worldPos); // ¿ùµåÁÂÇ¥¸¦ Äµ¹ö½ºÁÂÇ¥·Î º¯È¯
         GameObject effect = Instantiate(effectPrefab, _uiCanvas.transform);

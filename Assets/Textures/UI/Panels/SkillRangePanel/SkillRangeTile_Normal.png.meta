@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 2900f2d6c9dd7e745afa0a16291962fe
+guid: a3d18aa637e5dd94b9ed20d0a2376776
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2742517340385209818
-    second: TempSkillIcon_0
+      213: -1475111976517711152
+    second: SkillRangeTile_Normal_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: TempSkillIcon_0
+      name: SkillRangeTile_Normal_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 63
-        height: 66
+        width: 70
+        height: 68
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: add62089df06f0620800000000000000
-      internalID: 2742517340385209818
+      spriteID: 0daccbb0979578be0800000000000000
+      internalID: -1475111976517711152
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      TempSkillIcon_0: 2742517340385209818
+      SkillRangeTile_Normal_0: -1475111976517711152
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

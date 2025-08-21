@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using NUnit.Framework;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -10,6 +11,12 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
     private Player _player;
     private Spell _spell;
     [SerializeField] private Canvas _uiCanvas;
+
+    private GameObject _levelIcon;
+    private GameObject _costIcon;
+    private GameObject _skillRangePanel;
+    private TextMeshProUGUI _levelText;
+    private TextMeshProUGUI _costText;
 
     private float _damage;
     private int _skillLevel = 0;
@@ -28,15 +35,37 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
 
     private void Start()
     {
+        SetIcons();
+
         //_spell = Resources.Load<Spell>("Spells/None/FastStrike");
         _spell = Resources.Load<Spell>("Spells/Electric/ThunderStrike");
         LoadSpellData(_spell);
+
+        SetSkillRangePanel();
+    }
+
+    private void Update()
+    {
+        _levelText.text = _skillLevel.ToString();
+        _costText.text = _cost.ToString();
     }
 
     public void SetPlayer()
     {
         GameObject player = GameObject.FindWithTag("Player");
         _player = player.GetComponent<Player>();
+    }
+
+    public void SetIcons()
+    {
+        _levelIcon = transform.Find("LevelIcon").gameObject;
+        _costIcon = transform.Find("CostIcon").gameObject;
+
+        _levelText = _levelIcon.transform.Find("LevelText").gameObject.GetComponent<TextMeshProUGUI>();
+        _costText = _costIcon.transform.Find("CostText").gameObject.GetComponent<TextMeshProUGUI>();
+
+        _levelIcon.SetActive(false);
+        _costIcon.SetActive(false);
     }
 
     private void LoadSpellData(Spell spell)
@@ -55,6 +84,15 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
         }
     }
 
+    private void SetSkillRangePanel()
+    {
+        _skillRangePanel = transform.Find("SkillRangePanel").gameObject;
+        SkillRangePanel skillRangePanel = _skillRangePanel.GetComponent<SkillRangePanel>();
+        skillRangePanel.SetTiles(_baseRangeOffsets);
+
+        _skillRangePanel.SetActive(false);
+    }
+
     private void SetDamage()
     {
         float damage = 0;
@@ -66,6 +104,10 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
 
     public void OnPointerDown(PointerEventData eventData) // 처음 터치했을 때
     {
+        _levelIcon.SetActive(true);
+        _costIcon.SetActive(true);
+        _skillRangePanel.SetActive(true);
+
         Debug.Log("OnPointerDown");
         _isDragging = true;
         UpdateSpellTilePosition(eventData);
@@ -83,6 +125,10 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
 
     public void OnPointerUp(PointerEventData eventData) //손을 땠을 때
     {
+        _levelIcon.SetActive(false);
+        _costIcon.SetActive(false);
+        _skillRangePanel.SetActive(false);
+
         Debug.Log("OnPointerUp");
         if (_isDragging)
         {

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 32d45c2f1c803104cb71f8209af21d23
+guid: bf72f54ecb9c80f47a1097a03dbd13f7
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6185620659935699484
-    second: SkillPanel_0
+      213: 1584540159082900002
+    second: SkillRangeTile_Highlight_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: SkillPanel_0
+      name: SkillRangeTile_Highlight_0
       rect:
         serializedVersion: 2
-        x: 6
-        y: 6
-        width: 288
-        height: 543
+        x: 0
+        y: 0
+        width: 72
+        height: 69
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4ed173958c2482aa0800000000000000
-      internalID: -6185620659935699484
+      spriteID: 22a2a7221ea6df510800000000000000
+      internalID: 1584540159082900002
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      SkillPanel_0: -6185620659935699484
+      SkillRangeTile_Highlight_0: 1584540159082900002
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

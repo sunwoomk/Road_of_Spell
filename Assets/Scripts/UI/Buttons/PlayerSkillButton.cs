@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
 using TMPro;
@@ -8,9 +9,12 @@ using static UnityEditor.PlayerSettings;
 
 public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
+    private const float EffectDuration = 2f;
+
     private Player _player;
     private Spell _spell;
     [SerializeField] private Canvas _uiCanvas;
+    [SerializeField] private Material fadeOverlayMaterial;
 
     private GameObject _levelIcon;
     private GameObject _costIcon;
@@ -111,6 +115,7 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
         Debug.Log("OnPointerDown");
         _isDragging = true;
         UpdateSpellTilePosition(eventData);
+        StartFadeIn();
     }
 
     public void OnDrag(PointerEventData eventData) //드래그 하는 도중일 때
@@ -134,7 +139,16 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
         {
             _isDragging = false;
             CastSpell();
+            TileManager.Instance.SetSkillPreviewActive(false);
         }
+
+        StartCoroutine(DelayedFadeOut(EffectDuration));
+    }
+
+    private IEnumerator DelayedFadeOut(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        StartFadeOut();
     }
 
     private void UpdateSpellTilePosition(PointerEventData eventData)
@@ -154,9 +168,8 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
             {
                 //스펠을 시전할 중심 좌표를 현재 Ray가 가리키는 타일의 좌표로 변경
                 Vector2Int tilePos = tileComp.TilePos;
-                TileManager.Instance.SetCurSpellTilePos(tilePos);
+                TileManager.Instance.UpdateCurSpellTilePos(tilePos, _baseRangeOffsets);
                 _center = tilePos;
-                Debug.Log($"Spell center position updated to: {_center}");
             }
         }
     }
@@ -197,7 +210,7 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
         Vector2 canvasPos = WorldToCanvasPosition(worldPos); // 월드좌표를 캔버스좌표로 변환
         GameObject effect = Instantiate(effectPrefab, _uiCanvas.transform);
         effect.GetComponent<RectTransform>().anchoredPosition = canvasPos;
-        Destroy(effect, 2f);
+        Destroy(effect, EffectDuration);
     }
 
 
@@ -213,5 +226,32 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
             canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : Camera.main,
             out localPoint);
         return localPoint;
+    }
+
+    private IEnumerator FadeOverlay(float from, float to, float duration)
+    {
+        float elapsed = 0f;
+        Color color = fadeOverlayMaterial.GetColor("_Color");
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float alpha = Mathf.Lerp(from, to, elapsed / duration);
+            color.a = alpha;
+            fadeOverlayMaterial.SetColor("_Color", color);
+            yield return null;
+        }
+        color.a = to;
+        fadeOverlayMaterial.SetColor("_Color", color);
+    }
+
+    public void StartFadeIn()
+    {
+        StartCoroutine(FadeOverlay(0f, 0.5f, 0.3f));
+    }
+
+    public void StartFadeOut()
+    {
+        StartCoroutine(FadeOverlay(0.5f, 0f, 0.3f));
     }
 }

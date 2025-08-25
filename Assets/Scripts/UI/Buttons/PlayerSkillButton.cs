@@ -101,7 +101,8 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
     {
         float damage = 0;
 
-        damage = _baseDamage + _damagePerLevel * _skillLevel + _player.Power * _damageRatio;
+        //damage = _baseDamage + _damagePerLevel * _skillLevel + _player.Power * _damageRatio;
+        damage = _baseDamage + _damagePerLevel * _skillLevel;
 
         _damage = damage;
     }
@@ -176,7 +177,7 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
 
     private void CastSpell()
     {
-        //SetDamage();
+        SetDamage();
 
         _spellHitPositions.Clear();
         foreach (Vector2Int offset in _baseRangeOffsets)
@@ -185,7 +186,16 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
             _spellHitPositions.Add(hitPos);
         }
 
-        if(_spell.effectType == "Single")
+        foreach (Vector2Int pos in _spellHitPositions)
+        {
+            if (MonsterManager.Instance.Monsters.TryGetValue(pos, out GameObject monster))
+            {
+                monster.GetComponent<Monster>().TakeDamage(_damage);
+                Debug.Log("TakeDamage : " + _damage.ToString());
+            }
+        }
+
+        if (_spell.effectType == "Single")
         {
             Vector3 spawnWorldPos = TileManager.Instance.GetTileWorldPosition(_center);
             ShowEffect(spawnWorldPos);
@@ -207,26 +217,27 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
         GameObject effectPrefab = Resources.Load<GameObject>("Prefabs/Effects/Electric/" + effectName);
         //GameObject effectPrefab = Resources.Load<GameObject>("Prefabs/Effects/None/" + effectName);
 
-        Vector2 canvasPos = TileManager.Instance.WorldToCanvasPosition(worldPos); // ¿ùµåÁÂÇ¥¸¦ Äµ¹ö½ºÁÂÇ¥·Î º¯È¯
+        //Vector2 canvasPos = TileManager.Instance.WorldToCanvasPosition(worldPos); // ¿ùµåÁÂÇ¥¸¦ Äµ¹ö½ºÁÂÇ¥·Î º¯È¯
+        Vector2 canvasPos = WorldToCanvasPosition(worldPos); // ¿ùµåÁÂÇ¥¸¦ Äµ¹ö½ºÁÂÇ¥·Î º¯È¯
         GameObject effect = Instantiate(effectPrefab, _uiCanvas.transform);
         effect.GetComponent<RectTransform>().anchoredPosition = canvasPos;
         Destroy(effect, EffectDuration);
     }
 
 
-    //private Vector2 WorldToCanvasPosition(Vector3 worldPos) // ¿ùµåÁÂÇ¥¸¦ Äµ¹ö½ºÁÂÇ¥·Î º¯È¯
-    //{
-    //    Canvas canvas = _uiCanvas;
-    //    Vector2 screenPoint = Camera.main.WorldToScreenPoint(worldPos);
-    //    RectTransform canvasRect = canvas.GetComponent<RectTransform>();
-    //    Vector2 localPoint;
-    //    RectTransformUtility.ScreenPointToLocalPointInRectangle(
-    //        canvasRect,
-    //        screenPoint,
-    //        canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : Camera.main,
-    //        out localPoint);
-    //    return localPoint;
-    //}
+    private Vector2 WorldToCanvasPosition(Vector3 worldPos) // ¿ùµåÁÂÇ¥¸¦ Äµ¹ö½ºÁÂÇ¥·Î º¯È¯
+    {
+        Canvas canvas = _uiCanvas;
+        Vector2 screenPoint = Camera.main.WorldToScreenPoint(worldPos);
+        RectTransform canvasRect = canvas.GetComponent<RectTransform>();
+        Vector2 localPoint;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            canvasRect,
+            screenPoint,
+            canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : Camera.main,
+            out localPoint);
+        return localPoint;
+    }
 
     private IEnumerator FadeOverlay(float from, float to, float duration)
     {

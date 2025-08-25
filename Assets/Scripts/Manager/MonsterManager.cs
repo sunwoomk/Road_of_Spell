@@ -36,8 +36,13 @@ public class MonsterManager : MonoBehaviour
         public int LevelPerDefence => _levelPerDefence;
     }
 
+    [SerializeField] private Canvas _uiCanvas;
     private List<MonsterData> _allMonsterData = new List<MonsterData>();
-    private List<GameObject> _monsters = new List<GameObject>();
+    //private List<GameObject> _monsters = new List<GameObject>();
+    private Dictionary<Vector2Int, GameObject> _monsters = new Dictionary<Vector2Int, GameObject>();
+
+    //public List<GameObject> Monsters => _monsters;
+    public Dictionary<Vector2Int, GameObject> Monsters => _monsters;
 
     public static MonsterManager Instance { get; private set; }
 
@@ -85,14 +90,38 @@ public class MonsterManager : MonoBehaviour
         return monsterList;
     }
 
-    public void CreateMonster(int key, Vector2 position)
+    public void CreateMonster(int key, Vector2 worldPos, Vector2Int tilePos)
     {
         MonsterData monsterData = _allMonsterData.Find(m => m.Key == key + 100);
         string name = monsterData.Name;
         GameObject monster = Resources.Load<GameObject>("Prefabs/Monsters/" + name);
-        Instantiate(monster, position, Quaternion.identity);
-        Monster monsterScript = monster.GetComponent<Monster>();
+
+        Vector2 canvasPos = TileManager.Instance.WorldToCanvasPosition(worldPos);
+        GameObject monsterInstance = Instantiate(monster, _uiCanvas.transform);
+        monsterInstance.GetComponent<RectTransform>().anchoredPosition = canvasPos;
+
+        Monster monsterScript = monsterInstance.GetComponent<Monster>();
         monsterScript.SetDatas(monsterData);
-        _monsters.Add(monster);
+        monsterScript.Position = tilePos;
+        _monsters.Add(tilePos, monsterInstance);
+    }
+
+    public void AllMonstersMove()
+    {
+        foreach(GameObject monster in _monsters.Values)
+        {
+            Monster monsterScript = monster.GetComponent<Monster>();
+            monsterScript.MonsterMove();
+        }
+    }
+
+    public void RemoveMonster(GameObject monster)
+    {
+        var pos = monster.GetComponent<Monster>().Position;
+        if (_monsters.ContainsKey(pos))
+        {
+            _monsters.Remove(pos);
+        }
+        Destroy(monster);
     }
 }

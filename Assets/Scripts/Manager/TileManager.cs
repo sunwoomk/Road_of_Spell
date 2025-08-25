@@ -7,9 +7,9 @@ public class TileManager : MonoBehaviour
 {
     public static readonly Vector2 StartTilePos = new Vector2(-6.0f, 3f);
 
-    public const int TileWidth = 10;
-    public const int TileHeight = 5;
-    public const float TileSize = 1.2f;
+    public static int TileWidth = 10;
+    public static int TileHeight = 5;
+    public static float TileSize = 1.2f;
 
     [SerializeField] private Canvas _uiCanvas;
 

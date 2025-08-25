@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class TileManager : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class TileManager : MonoBehaviour
     public const int TileWidth = 10;
     public const int TileHeight = 5;
     public const float TileSize = 1.2f;
+
+    [SerializeField] private Canvas _uiCanvas;
 
     private Vector2Int _spellTargetCenterPos;
 
@@ -38,6 +41,20 @@ public class TileManager : MonoBehaviour
     private void Update()
     {
 
+    }
+
+    public Vector2 WorldToCanvasPosition(Vector3 worldPos) // ¿ùµåÁÂÇ¥¸¦ Äµ¹ö½ºÁÂÇ¥·Î º¯È¯
+    {
+        Canvas canvas = _uiCanvas;
+        Vector2 screenPoint = Camera.main.WorldToScreenPoint(worldPos);
+        RectTransform canvasRect = canvas.GetComponent<RectTransform>();
+        Vector2 localPoint;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            canvasRect,
+            screenPoint,
+            canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : Camera.main,
+            out localPoint);
+        return localPoint;
     }
 
     private void SetTiles()

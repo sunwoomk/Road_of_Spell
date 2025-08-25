@@ -207,26 +207,26 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
         GameObject effectPrefab = Resources.Load<GameObject>("Prefabs/Effects/Electric/" + effectName);
         //GameObject effectPrefab = Resources.Load<GameObject>("Prefabs/Effects/None/" + effectName);
 
-        Vector2 canvasPos = WorldToCanvasPosition(worldPos); // ¿ùµåÁÂÇ¥¸¦ Äµ¹ö½ºÁÂÇ¥·Î º¯È¯
+        Vector2 canvasPos = TileManager.Instance.WorldToCanvasPosition(worldPos); // ¿ùµåÁÂÇ¥¸¦ Äµ¹ö½ºÁÂÇ¥·Î º¯È¯
         GameObject effect = Instantiate(effectPrefab, _uiCanvas.transform);
         effect.GetComponent<RectTransform>().anchoredPosition = canvasPos;
         Destroy(effect, EffectDuration);
     }
 
 
-    private Vector2 WorldToCanvasPosition(Vector3 worldPos) // ¿ùµåÁÂÇ¥¸¦ Äµ¹ö½ºÁÂÇ¥·Î º¯È¯
-    {
-        Canvas canvas = _uiCanvas;
-        Vector2 screenPoint = Camera.main.WorldToScreenPoint(worldPos);
-        RectTransform canvasRect = canvas.GetComponent<RectTransform>();
-        Vector2 localPoint;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            canvasRect,
-            screenPoint,
-            canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : Camera.main,
-            out localPoint);
-        return localPoint;
-    }
+    //private Vector2 WorldToCanvasPosition(Vector3 worldPos) // ¿ùµåÁÂÇ¥¸¦ Äµ¹ö½ºÁÂÇ¥·Î º¯È¯
+    //{
+    //    Canvas canvas = _uiCanvas;
+    //    Vector2 screenPoint = Camera.main.WorldToScreenPoint(worldPos);
+    //    RectTransform canvasRect = canvas.GetComponent<RectTransform>();
+    //    Vector2 localPoint;
+    //    RectTransformUtility.ScreenPointToLocalPointInRectangle(
+    //        canvasRect,
+    //        screenPoint,
+    //        canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : Camera.main,
+    //        out localPoint);
+    //    return localPoint;
+    //}
 
     private IEnumerator FadeOverlay(float from, float to, float duration)
     {

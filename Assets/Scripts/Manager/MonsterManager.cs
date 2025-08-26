@@ -117,6 +117,19 @@ public class MonsterManager : MonoBehaviour
             Monster monsterScript = monster.GetComponent<Monster>();
             monsterScript.MonsterMove();
         }
+
+        Dictionary<Vector2Int, GameObject> newMonsters = new Dictionary<Vector2Int, GameObject>();
+
+        // 이동 끝난 몬스터들의 최신 Position 값으로 채워넣기
+        foreach (GameObject monster in _monsters.Values)
+        {
+            Monster monsterScript = monster.GetComponent<Monster>();
+            Vector2Int newPos = monsterScript.Position;
+            newMonsters[newPos] = monster;
+        }
+
+        // 기존 딕셔너리 교체
+        _monsters = newMonsters;
     }
 
     public void RemoveMonster(GameObject monster)

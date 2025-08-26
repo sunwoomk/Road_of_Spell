@@ -48,6 +48,9 @@ public class Monster : MonoBehaviour
         Vector2 targetPos = currentPos + canvasDistance;
 
         StartCoroutine(MoveRectTransform(rect, targetPos, duration));
+
+        //포지션값 수정
+        _position += new Vector2Int(_speed * -1, 0);
     }
 
     public void TakeDamage(float damage)
@@ -65,6 +68,7 @@ public class Monster : MonoBehaviour
         Destroy(gameObject);
     }
 
+    //선형보간을 활용하여 부드러운 움직임 구현
     private IEnumerator MoveRectTransform(RectTransform rect, Vector2 targetPos, float duration)
     {
         Vector2 startPos = rect.anchoredPosition;

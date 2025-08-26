@@ -90,21 +90,25 @@ public class MonsterManager : MonoBehaviour
         return monsterList;
     }
 
-    public void CreateMonster(int key, Vector2 worldPos, Vector2Int tilePos)
+    public void CreateMonster(int key, Vector2 worldPos, Vector2Int tilePos) // 실제로 타일 위에 몬스터를 생성하는 함수
     {
+        //매개변수로 받은 정보로 몬스터 프리팹 로드
         MonsterData monsterData = _allMonsterData.Find(m => m.Key == key + 100);
         string name = monsterData.Name;
         GameObject monster = Resources.Load<GameObject>("Prefabs/Monsters/" + name);
 
+        // 몬스터 인스턴스 생성 및 초기화
         Vector2 canvasPos = TileManager.Instance.WorldToCanvasPosition(worldPos);
         GameObject monsterInstance = Instantiate(monster, _uiCanvas.transform);
         monsterInstance.GetComponent<RectTransform>().anchoredPosition = canvasPos;
 
+        //해당 몬스터 스크립트에 데이터 전달 및 Dictionary에 추가
         Monster monsterScript = monsterInstance.GetComponent<Monster>();
         monsterScript.SetDatas(monsterData);
         monsterScript.Position = tilePos;
         _monsters.Add(tilePos, monsterInstance);
     }
+
 
     public void AllMonstersMove()
     {

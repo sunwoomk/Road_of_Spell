@@ -1273,7 +1273,7 @@ MonoBehaviour:
   _testStage:
     roundCount: 0
     monsterSpawns: []
-  _uiCanvas: {fileID: 0}
+  _uiCanvas: {fileID: 1760485995}
 --- !u!1 &483121871
 GameObject:
   m_ObjectHideFlags: 0

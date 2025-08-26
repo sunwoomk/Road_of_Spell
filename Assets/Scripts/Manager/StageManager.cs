@@ -40,7 +40,7 @@ public class StageManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        //TestJsonFileSave();
+        TestJsonFileSave();
         LoadStageJson();
     }
 
@@ -65,19 +65,32 @@ public class StageManager : MonoBehaviour
         SpawnMonsters();
     }
 
-    private void SpawnMonsters()
+    private void SpawnMonsters()  // 현재 라운드에 해당하는 몬스터들을 스폰하는 함수
     {
+        // x 값이 현재 라운드와 같은 요소만 추출
         List<MonsterSpawnData> spawnsThisRound = _testStage.monsterSpawns.FindAll(m => m.x == _currentRound - 1);
-        Vector2 startTilePos = new Vector2(TileManager.StartTilePos.x + TileManager.TileSize * (TileManager.TileWidth - 1), TileManager.StartTilePos.y);
-        foreach (var spawn in spawnsThisRound)
+
+        Vector2 startTilePos = new Vector2(
+            TileManager.StartTilePos.x + TileManager.TileSize * (TileManager.TileWidth - 1),
+            TileManager.StartTilePos.y
+        );
+
+        foreach (MonsterSpawnData spawn in spawnsThisRound)
         {
-            Vector2 worldPos = new Vector2(startTilePos.x, startTilePos.y - (spawn.y * TileManager.TileSize));
+            // 월드 좌표 구하기
+            Vector2 worldPos = new Vector2(
+                startTilePos.x,
+                startTilePos.y - (spawn.y * TileManager.TileSize)
+            );
+
+            // 해당 몬스터가 배치될 타일 좌표 (타일 맵 기준 좌표)
             Vector2Int tilePos = new Vector2Int(TileManager.TileWidth - 1, spawn.y);
 
+            // (spawn.key: 몬스터 종류 키, worldPos: 실제 위치, tilePos: 타일 좌표)
             MonsterManager.Instance.CreateMonster(spawn.key, worldPos, tilePos);
-            Debug.Log("Spawn!");
         }
     }
+
 
     private void TestJsonFileSave()
     {
@@ -93,12 +106,14 @@ public class StageManager : MonoBehaviour
 
         string json = JsonUtility.ToJson(_testStage, true);
 
-        File.WriteAllText(Application.dataPath + "/Resources/Stages/TestStage2.json", json);
+        File.WriteAllText(Application.dataPath + "/Resources/Stages/TestStage.json", json);
+
+        Debug.Log("Stage data saved successfully.");
     }
 
     private void LoadStageJson()
     {
-        string filePath = Application.dataPath + "/Resources/Stages/TestStage2.json";
+        string filePath = Application.dataPath + "/Resources/Stages/TestStage.json";
 
         if (File.Exists(filePath))
         {

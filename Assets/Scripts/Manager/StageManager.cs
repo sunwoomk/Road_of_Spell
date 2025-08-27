@@ -25,6 +25,7 @@ public class StageManager : MonoBehaviour
     private Canvas _uiCanvas;
 
     private int _currentRound = 0;
+    private int _currentStage = 0;
 
     public static StageManager Instance { get; private set; }
 
@@ -40,13 +41,14 @@ public class StageManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        TestJsonFileSave();
+        _currentRound++;
+        _currentStage++;
+
         LoadStageJson();
     }
 
     private void Start()
     {
-        _currentRound++;
         SpawnMonsters();
     }
 
@@ -92,28 +94,28 @@ public class StageManager : MonoBehaviour
     }
 
 
-    private void TestJsonFileSave()
-    {
-        _testStage = new Stage();
-        _testStage.roundCount = 2;
-        _testStage.monsterSpawns = new List<MonsterSpawnData>
-        {
-            new MonsterSpawnData { x = 0, y = 1 , key = 1},
-            new MonsterSpawnData { x = 0, y = 3 , key = 2},
-            new MonsterSpawnData { x = 1, y = 2 , key = 1},
-            new MonsterSpawnData { x = 1, y = 4 , key = 3}
-        };
+    //private void TestJsonFileSave()
+    //{
+    //    _testStage = new Stage();
+    //    _testStage.roundCount = 2;
+    //    _testStage.monsterSpawns = new List<MonsterSpawnData>
+    //    {
+    //        new MonsterSpawnData { x = 0, y = 1 , key = 1},
+    //        new MonsterSpawnData { x = 0, y = 3 , key = 2},
+    //        new MonsterSpawnData { x = 1, y = 2 , key = 1},
+    //        new MonsterSpawnData { x = 1, y = 4 , key = 3}
+    //    };
 
-        string json = JsonUtility.ToJson(_testStage, true);
+    //    string json = JsonUtility.ToJson(_testStage, true);
 
-        File.WriteAllText(Application.dataPath + "/Resources/Stages/TestStage.json", json);
+    //    File.WriteAllText(Application.dataPath + "/Resources/Stages/TestStage.json", json);
 
-        Debug.Log("Stage data saved successfully.");
-    }
+    //    Debug.Log("Stage data saved successfully.");
+    //}
 
     private void LoadStageJson()
     {
-        string filePath = Application.dataPath + "/Resources/Stages/TestStage.json";
+        string filePath = Application.dataPath + "/Resources/Stages/Stage" + _currentStage + ".json";
 
         if (File.Exists(filePath))
         {

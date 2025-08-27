@@ -38,10 +38,9 @@ public class MonsterManager : MonoBehaviour
 
     [SerializeField] private Canvas _uiCanvas;
     private List<MonsterData> _allMonsterData = new List<MonsterData>();
-    //private List<GameObject> _monsters = new List<GameObject>();
-    private Dictionary<Vector2Int, GameObject> _monsters = new Dictionary<Vector2Int, GameObject>();
+    public List<MonsterData> AllMonsterData => _allMonsterData;
 
-    //public List<GameObject> Monsters => _monsters;
+    private Dictionary<Vector2Int, GameObject> _monsters = new Dictionary<Vector2Int, GameObject>();
     public Dictionary<Vector2Int, GameObject> Monsters => _monsters;
 
     public static MonsterManager Instance { get; private set; }

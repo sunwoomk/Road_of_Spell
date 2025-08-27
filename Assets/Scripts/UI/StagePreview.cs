@@ -71,7 +71,7 @@ public class StagePreview : MonoBehaviour
         {
             _roundCount = inputCount;
             int buttonCount = _roundCount * 5;
-            CreateEditTiles(buttonCount);
+            CreateEditTiles(inputCount);
             AdjustContentWidth(buttonCount);
             _inputStageName.onEndEdit.AddListener(SaveStageDataToJson);
         }
@@ -90,9 +90,14 @@ public class StagePreview : MonoBehaviour
         }
 
         // 버튼 생성
-        for (int i = 0; i < count; i++)
+        for(int x = 0; x < count; x++)
         {
-            Instantiate(_editTilePrefab, _content);
+            for(int y = 0; y < 5; y++)
+            {
+                GameObject editTileButtonInstance = Instantiate(_editTilePrefab, _content);
+                EditTileButton editTileButton = editTileButtonInstance.GetComponent<EditTileButton>();
+                editTileButton.Init(x, y);
+            }
         }
     }
 

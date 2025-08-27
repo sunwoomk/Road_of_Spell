@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 291892874748143159}
   - component: {fileID: 8996131960749931220}
   - component: {fileID: 4463241896295621196}
+  - component: {fileID: 2214450128708919146}
   m_Layer: 5
   m_Name: EditTile
   m_TagString: Untagged
@@ -120,3 +121,15 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2214450128708919146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8236118439002369980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46e3f011f60b44547ac1274bc09e3f2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

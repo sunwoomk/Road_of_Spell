@@ -98,8 +98,10 @@ public class StagePreview : MonoBehaviour
 
     private void AdjustContentWidth(int buttonCount)
     {
+        // 버튼 개수에 따라 필요한 열 수 계산 (나머지가 있을 경우 올림 처리)
         int totalRows = Mathf.CeilToInt(buttonCount / (float)_buttonsPerColumn);
 
+        // 열 수와 버튼 크기를 기반으로 Content의 가로/세로 크기 갱신
         float width = totalRows * _buttonSize;
         float fixedHeight = _buttonSize * _buttonsPerColumn;
 

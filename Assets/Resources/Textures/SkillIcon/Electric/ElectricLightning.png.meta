@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: d4df849c45c685f4ea32cb047387e562
+guid: 2dc46ae1b3e8af54483329ef127475ee
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4104702787452408478
-    second: ElectricLightning_0
+      213: 3387373681634252245
+    second: ElectricLightning 1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,12 +113,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ElectricLightning_0
+      name: ElectricLightning 1_0
       rect:
         serializedVersion: 2
         x: 39
         y: 39
-        width: 946
+        width: 943
         height: 948
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e9218a20075d6f830800000000000000
-      internalID: 4104702787452408478
+      spriteID: 5d511579a6e520f20800000000000000
+      internalID: 3387373681634252245
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      ElectricLightning_0: 4104702787452408478
+      ElectricLightning 1_0: 3387373681634252245
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

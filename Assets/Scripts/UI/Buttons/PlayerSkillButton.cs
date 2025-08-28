@@ -18,7 +18,7 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
 
     private GameObject _levelIcon;
     private GameObject _costIcon;
-    private GameObject _skillRangePanel;
+    [SerializeField] private GameObject _skillRangePanel;
     private TextMeshProUGUI _levelText;
     private TextMeshProUGUI _costText;
 
@@ -28,7 +28,7 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
     private Vector2Int _center = new Vector2Int();
     private List<Vector2Int> _spellHitPositions = new List<Vector2Int>();
 
-    [SerializeField] private string _spellName;
+    private string _spellName;
     private string _element;
     private int _tier;
     private float _baseDamage;
@@ -41,20 +41,22 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
     private void Start()
     {
         SetIcons();
-
-        //임시로 하드코딩(후에 수정할 예정)
-        //_spellName = "ElectricTornado";
-        _spell = Resources.Load<Spell>("Spells/Electric/" + _spellName);
-
-        LoadSpellData(_spell);
-
-        SetSkillRangePanel();
     }
 
     private void Update()
     {
         _levelText.text = _skillLevel.ToString();
         _costText.text = _cost.ToString();
+    }
+
+    public void Init(string skillName)
+    {
+        _skillRangePanel = GameObject.Find("SkillRangePanel");
+        _uiCanvas = GameObject.Find("Canvas").GetComponent<Canvas>();
+
+        _spellName = skillName;
+        _spell = Resources.Load<Spell>("Spells/Electric/" + _spellName);
+        LoadSpellData(_spell);
     }
 
     public void SetPlayer()
@@ -97,11 +99,11 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
 
     private void SetSkillRangePanel()
     {
-        _skillRangePanel = transform.Find("SkillRangePanel").gameObject;
-        SkillRangePanel skillRangePanel = _skillRangePanel.GetComponent<SkillRangePanel>();
-        skillRangePanel.SetTiles(_baseRangeOffsets);
+        _skillRangePanel = GameObject.Find("SkillRangePanel");
+        //SkillRangePanel skillRangePanel = _skillRangePanel.GetComponent<SkillRangePanel>();
+        //skillRangePanel.SetTiles(_baseRangeOffsets);
 
-        _skillRangePanel.SetActive(false);
+        //_skillRangePanel.SetActive(false);
     }
 
     private void SetDamage()
@@ -119,6 +121,8 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
         _levelIcon.SetActive(true);
         _costIcon.SetActive(true);
         _skillRangePanel.SetActive(true);
+        SkillRangePanel skillRangePanel = _skillRangePanel.GetComponent<SkillRangePanel>();
+        skillRangePanel.SetTiles(_baseRangeOffsets);
 
         Debug.Log("OnPointerDown");
         _isDragging = true;

@@ -5,6 +5,8 @@ using System.Collections;
 
 public class Monster : MonoBehaviour
 {
+    private const float DeadDuration = 1f;
+
     private int _level;
     private float _maxHp;
     private float _currentHp;
@@ -46,7 +48,7 @@ public class Monster : MonoBehaviour
         Vector2 canvasDistance = WorldDistanceToCanvasDistance(worldDistance);
 
         Vector2 targetPos = currentPos + canvasDistance;
-
+        _animator.SetBool("IsMove", true);
         StartCoroutine(MoveRectTransform(rect, targetPos, duration));
 
         //포지션값 수정
@@ -64,6 +66,13 @@ public class Monster : MonoBehaviour
 
     public void Dead()
     {
+        _animator.SetTrigger("Dead");
+        StartCoroutine(WaitAndDestroy());
+    }
+
+    private IEnumerator WaitAndDestroy()
+    {
+        yield return new WaitForSeconds(DeadDuration);
         MonsterManager.Instance.RemoveMonster(gameObject);
         Destroy(gameObject);
     }
@@ -81,6 +90,7 @@ public class Monster : MonoBehaviour
             yield return null;
         }
 
+        _animator.SetBool("IsMove", false);
         rect.anchoredPosition = targetPos;
     }
 

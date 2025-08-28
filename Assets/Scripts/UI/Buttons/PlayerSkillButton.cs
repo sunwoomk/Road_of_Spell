@@ -28,6 +28,7 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
     private Vector2Int _center = new Vector2Int();
     private List<Vector2Int> _spellHitPositions = new List<Vector2Int>();
 
+    [SerializeField] private string _spellName;
     private string _element;
     private int _tier;
     private float _baseDamage;
@@ -41,8 +42,10 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
     {
         SetIcons();
 
-        //_spell = Resources.Load<Spell>("Spells/None/FastStrike");
-        _spell = Resources.Load<Spell>("Spells/Electric/ThunderStrike");
+        //임시로 하드코딩(후에 수정할 예정)
+        //_spellName = "ElectricTornado";
+        _spell = Resources.Load<Spell>("Spells/Electric/" + _spellName);
+
         LoadSpellData(_spell);
 
         SetSkillRangePanel();
@@ -86,6 +89,10 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
         {
             _baseRangeOffsets.Add(spell.range[i]);
         }
+
+        Sprite newSprite = Resources.Load<Sprite>("Textures/SkillIcon/" + _element + "/" + _spellName);
+        Image image = gameObject.GetComponent<Image>();
+        image.sprite = newSprite;
     }
 
     private void SetSkillRangePanel()
@@ -212,12 +219,8 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
 
     private void ShowEffect(Vector3 worldPos) // 이펙트 호출 함수
     {
-        string effectName = "ThunderStrike";
-        //string effectName = "FastStrike";
-        GameObject effectPrefab = Resources.Load<GameObject>("Prefabs/Effects/Electric/" + effectName);
-        //GameObject effectPrefab = Resources.Load<GameObject>("Prefabs/Effects/None/" + effectName);
+        GameObject effectPrefab = Resources.Load<GameObject>("Prefabs/Effects/" + _element + "/" + _spellName);
 
-        //Vector2 canvasPos = TileManager.Instance.WorldToCanvasPosition(worldPos); // 월드좌표를 캔버스좌표로 변환
         Vector2 canvasPos = WorldToCanvasPosition(worldPos); // 월드좌표를 캔버스좌표로 변환
         GameObject effect = Instantiate(effectPrefab, _uiCanvas.transform);
         effect.GetComponent<RectTransform>().anchoredPosition = canvasPos;

@@ -10,23 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce5205bd079d89b41b8f0333a044ba7b, type: 3}
-  m_Name: ThunderStrike
+  m_Name: ElectricExplosion
   m_EditorClassIdentifier: 
-  tempNum: 3
-  element: electric
-  tier: 3
-  baseDamage: 200
-  damagePerLevel: 100
-  damageRatio: 1
-  cost: 5
+  element: Electric
+  tier: 1
+  baseDamage: 50
+  damagePerLevel: 25
+  damageRatio: 0.5
+  cost: 1
   range:
-  - {x: -2, y: 2}
-  - {x: 2, y: 2}
-  - {x: -1, y: 1}
-  - {x: 1, y: 1}
   - {x: 0, y: 0}
-  - {x: -1, y: -1}
-  - {x: 1, y: -1}
-  - {x: -2, y: -2}
-  - {x: 2, y: -2}
-  effectType: Multy
+  effectType: Single

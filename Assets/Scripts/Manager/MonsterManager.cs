@@ -111,23 +111,30 @@ public class MonsterManager : MonoBehaviour
 
     public void AllMonstersMove()
     {
-        foreach(GameObject monster in _monsters.Values)
-        {
-            Monster monsterScript = monster.GetComponent<Monster>();
-            monsterScript.MonsterMove();
-        }
-
         Dictionary<Vector2Int, GameObject> newMonsters = new Dictionary<Vector2Int, GameObject>();
 
-        // 이동 끝난 몬스터들의 최신 Position 값으로 채워넣기
         foreach (GameObject monster in _monsters.Values)
         {
             Monster monsterScript = monster.GetComponent<Monster>();
-            Vector2Int newPos = monsterScript.Position;
+
+            //논리좌표 계산
+            Vector2Int newPos = monsterScript.Position - new Vector2Int(monsterScript.Speed, 0);
+
+            //이미 목표위치에 몬스터가 있다면 1칸 더 이동
+            if (newMonsters.ContainsKey(newPos))
+            {
+                newPos += new Vector2Int(-1, 0);
+            }
+
+            //정해진 목표 거리만큼 이동
+            int moveDistance = newPos.x - monsterScript.Position.x;
+            monsterScript.MonsterMove(moveDistance);
+
+            //새로운 Dictionary에 추가
             newMonsters[newPos] = monster;
         }
 
-        // 기존 딕셔너리 교체
+        // 새로운 Dictionary로 교체
         _monsters = newMonsters;
     }
 

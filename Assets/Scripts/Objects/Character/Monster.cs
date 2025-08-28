@@ -6,6 +6,7 @@ using System.Collections;
 public class Monster : MonoBehaviour
 {
     private const float DeadDuration = 1f;
+    private const float MoveDuration = 1f;
 
     private int _level;
     private float _maxHp;
@@ -22,6 +23,8 @@ public class Monster : MonoBehaviour
         set { _position = value; }
     }
 
+    public int Speed => _speed;
+
     private void Awake()
     {
         _animator = GetComponent<Animator>();
@@ -36,23 +39,23 @@ public class Monster : MonoBehaviour
         _speed = monsterData.Speed;
     }
 
-    public void MonsterMove(float duration = 1.0f)
+    public void MonsterMove(int moveDistance)
     {
         RectTransform rect = gameObject.GetComponent<RectTransform>();
         Vector2 currentPos = rect.anchoredPosition;
 
         // 월드 단위 이동 거리 예: 왼쪽으로 _speed * TileSize 만큼 이동
-        Vector2 worldDistance = new Vector2(-_speed * TileManager.TileSize, 0);
+        Vector2 worldDistance = new Vector2(moveDistance * TileManager.TileSize, 0);
 
         // 월드 거리 → 캔버스 거리 변환
         Vector2 canvasDistance = WorldDistanceToCanvasDistance(worldDistance);
 
         Vector2 targetPos = currentPos + canvasDistance;
         _animator.SetBool("IsMove", true);
-        StartCoroutine(MoveRectTransform(rect, targetPos, duration));
+        StartCoroutine(MoveRectTransform(rect, targetPos, MoveDuration));
 
         //포지션값 수정
-        _position += new Vector2Int(_speed * -1, 0);
+        _position += new Vector2Int(moveDistance, 0);
     }
 
     public void TakeDamage(float damage)

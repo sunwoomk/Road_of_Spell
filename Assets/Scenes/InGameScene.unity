@@ -8151,6 +8151,8 @@ MonoBehaviour:
   - ElectricSphere
   - ElectricTornado
   - ElectricLightning
+  - ElectricSpin
+  - ElectricNova
 --- !u!1 &1915547661
 GameObject:
   m_ObjectHideFlags: 0

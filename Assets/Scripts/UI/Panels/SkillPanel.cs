@@ -22,15 +22,16 @@ public class SkillPanel : MonoBehaviour
         _playerSkills.Add(skillName);
     }
 
-    private void SetSkills()
+    public void SetSkills()
     {
         for (int i = 0; i < _playerSkills.Count; i++)
         {
+            //List<string> _playerSkills 안에있는 스킬 이름들을 바탕으로 스킬 생성
             string skillName = _playerSkills[i];
             GameObject skillButton = Instantiate(_skillButtonPrefab, transform);
             skillButton.name = skillName;
 
-            // 위치 설정: 왼쪽 정렬, 가로로 200 간격으로 배치
+            // 위치 설정: 왼쪽 정렬, 가로로 SkillButtonSize 간격으로 배치
             RectTransform rt = skillButton.GetComponent<RectTransform>();
             rt.anchoredPosition = new Vector2(-900 + i * SkillButtonSize, 0);
 

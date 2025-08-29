@@ -35,6 +35,7 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
     private float _damagePerLevel;
     private float _damageRatio;
     private int _cost;
+    private string _effectType;
 
     private bool _isDragging = false;
 
@@ -85,25 +86,19 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
         _damagePerLevel = spell.damagePerLevel;
         _damageRatio = spell.damageRatio;
         _cost = spell.cost;
+        _effectType = spell.effectType;
+
+        Sprite newSprite = Resources.Load<Sprite>("Textures/SkillIcon/" + _element + "/" + _spellName);
+        Image image = gameObject.GetComponent<Image>();
+        image.sprite = newSprite;
+
+        if (spell.range.Length == 0) return;
 
         _baseRangeOffsets.Clear();
         for(int i = 0; i < spell.range.Length; i++)
         {
             _baseRangeOffsets.Add(spell.range[i]);
         }
-
-        Sprite newSprite = Resources.Load<Sprite>("Textures/SkillIcon/" + _element + "/" + _spellName);
-        Image image = gameObject.GetComponent<Image>();
-        image.sprite = newSprite;
-    }
-
-    private void SetSkillRangePanel()
-    {
-        _skillRangePanel = GameObject.Find("SkillRangePanel");
-        //SkillRangePanel skillRangePanel = _skillRangePanel.GetComponent<SkillRangePanel>();
-        //skillRangePanel.SetTiles(_baseRangeOffsets);
-
-        //_skillRangePanel.SetActive(false);
     }
 
     private void SetDamage()
@@ -124,7 +119,6 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
         SkillRangePanel skillRangePanel = _skillRangePanel.GetComponent<SkillRangePanel>();
         skillRangePanel.SetTiles(_baseRangeOffsets);
 
-        Debug.Log("OnPointerDown");
         _isDragging = true;
         UpdateSpellTilePosition(eventData);
         StartFadeIn();
@@ -132,7 +126,6 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
 
     public void OnDrag(PointerEventData eventData) //드래그 하는 도중일 때
     {
-        Debug.Log("OnDrag");
         if (_isDragging)
         {
             //스펠을 시전할 중심 좌표 업데이트
@@ -146,7 +139,6 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
         _costIcon.SetActive(false);
         _skillRangePanel.SetActive(false);
 
-        Debug.Log("OnPointerUp");
         if (_isDragging)
         {
             _isDragging = false;
@@ -191,10 +183,23 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
         SetDamage();
 
         _spellHitPositions.Clear();
-        foreach (Vector2Int offset in _baseRangeOffsets)
+
+        //범위가 따로 없다면
+        if (_baseRangeOffsets == null || _baseRangeOffsets.Count == 0)
         {
-            Vector2Int hitPos = new Vector2Int(_center.x + offset.x, _center.y + offset.y);
-            _spellHitPositions.Add(hitPos);
+            foreach (Vector2Int hitPos in TileManager.Instance.AllTilePositions())
+            {
+                //타일 전체 타격
+                _spellHitPositions.Add(hitPos);
+            }
+        }
+        else
+        {
+            foreach (Vector2Int offset in _baseRangeOffsets)
+            {
+                Vector2Int hitPos = new Vector2Int(_center.x + offset.x, _center.y + offset.y);
+                _spellHitPositions.Add(hitPos);
+            }
         }
 
         foreach (Vector2Int pos in _spellHitPositions)
@@ -202,22 +207,26 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
             if (MonsterManager.Instance.Monsters.TryGetValue(pos, out GameObject monster))
             {
                 monster.GetComponent<Monster>().TakeDamage(_damage);
-                Debug.Log("TakeDamage : " + _damage.ToString());
             }
         }
 
-        if (_spell.effectType == "Single")
+        if (_effectType == "Single")
         {
             Vector3 spawnWorldPos = TileManager.Instance.GetTileWorldPosition(_center);
             ShowEffect(spawnWorldPos);
         }
-        else if(_spell.effectType == "Multy")
+        else if(_effectType == "Multy")
         {
             foreach (Vector2Int pos in _spellHitPositions)
             {
                 Vector3 spawnWorldPos = TileManager.Instance.GetTileWorldPosition(pos);
                 ShowEffect(spawnWorldPos);
             }
+        }
+        else if(_effectType == "Global")
+        {
+            Vector3 spawnWorldPos = Vector3.zero;            
+            ShowEffect(spawnWorldPos);
         }
     }
 

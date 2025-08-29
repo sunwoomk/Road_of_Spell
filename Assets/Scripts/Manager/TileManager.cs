@@ -57,6 +57,11 @@ public class TileManager : MonoBehaviour
         return localPoint;
     }
 
+    public IEnumerable<Vector2Int> AllTilePositions()
+    {
+        return _tiles.Keys;
+    }
+
     private void SetTiles()
     {
         GameObject tilePrefab = Resources.Load<GameObject>("Prefabs/Tile");
@@ -100,6 +105,13 @@ public class TileManager : MonoBehaviour
     private void UpdateSkillPreviewOverlay(List<Vector2Int> rangeOffsets)
     {
         SetSkillPreviewActive(false);
+
+        if (rangeOffsets == null || rangeOffsets.Count == 0)
+        {
+            // 빈 리스트일 경우 모든 오버레이 활성화
+            SetSkillPreviewActive(true);
+            return;
+        }
 
         // _spellTargetPos를 중심으로 rangeOffsets 더한 타일들만 활성화
         foreach (Vector2Int offset in rangeOffsets)

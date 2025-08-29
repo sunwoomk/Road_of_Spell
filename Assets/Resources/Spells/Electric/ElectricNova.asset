@@ -10,14 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce5205bd079d89b41b8f0333a044ba7b, type: 3}
-  m_Name: ElectricExplosion
+  m_Name: ElectricNova
   m_EditorClassIdentifier: 
   element: Electric
-  tier: 1
-  baseDamage: 50
-  damagePerLevel: 25
-  damageRatio: 0.1
-  cost: 1
-  range:
-  - {x: 0, y: 0}
-  effectType: Single
+  tier: 4
+  baseDamage: 1000
+  damagePerLevel: 0
+  damageRatio: 3
+  cost: 10
+  range: []
+  effectType: Global

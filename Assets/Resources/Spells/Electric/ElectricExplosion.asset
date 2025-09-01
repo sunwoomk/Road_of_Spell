@@ -21,4 +21,6 @@ MonoBehaviour:
   range:
   - {x: 0, y: 0}
   effectType: Single
-  parentSpells: []
+  nextSpells:
+  - {fileID: 11400000, guid: 85c9e7cb0e9bd4b4981e3a1cc3e37688, type: 2}
+  - {fileID: 11400000, guid: 6048e127881810242b563e5fefeb473b, type: 2}

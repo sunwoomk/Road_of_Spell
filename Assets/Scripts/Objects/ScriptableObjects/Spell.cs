@@ -13,5 +13,5 @@ public class Spell : ScriptableObject
     public int cost;
     public Vector2Int[] range;
     public string effectType;
-    public List<Spell> parentSpells = new List<Spell>();
+    public List<Spell> nextSpells = new List<Spell>();
 }

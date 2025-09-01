@@ -10,6 +10,7 @@ using static UnityEditor.PlayerSettings;
 public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
     private const float EffectDuration = 2f;
+    private int[] _requiredLevels = { 3, 5, 7 };
 
     private Player _player;
     private Spell _spell;
@@ -39,13 +40,9 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
     private float _damageRatio;
     private int _cost;
     private string _effectType;
+    private List<Spell> _nextSpells = new List<Spell>();
 
     private bool _isDragging = false;
-
-    private void Start()
-    {
-        SetIcons();
-    }
 
     private void Update()
     {
@@ -97,9 +94,11 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
 
     public void Init(string skillName, Player player)
     {
+        SetIcons();
+
         _player = player.GetComponent<Player>();
 
-        _skillRangePanel = GameObject.Find("SkillRangePanel");
+        _skillRangePanel = InGameManager.Instance.SkillRangePanel;
         _uiCanvas = GameObject.Find("Canvas").GetComponent<Canvas>();
 
         _spellName = skillName;
@@ -133,6 +132,7 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
         _damageRatio = spell.damageRatio;
         _cost = spell.cost;
         _effectType = spell.effectType;
+        _nextSpells = spell.nextSpells;
 
         Sprite newSprite = Resources.Load<Sprite>("Textures/SkillIcon/" + _element + "/" + _spellName);
         Image image = gameObject.GetComponent<Image>();
@@ -159,9 +159,28 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
 
     private void SkillLevelUp()
     {
-        Debug.Log("SkillLevelUp!" + _spellName + "SkillLevel : " + _skillLevel);
         _skillLevel += 1;
+        Debug.Log("SkillLevelUp!" + _spellName + "SkillLevel : " + _skillLevel);
         _player.UseSkillLevelUpPoint();
+
+        if (_tier >= 1 && _tier <= 3)
+        {
+            if (_skillLevel == _requiredLevels[_tier - 1] && _nextSpells.Count > 0)
+            {
+                AddNextSkill();
+            }
+        }
+    }
+
+    private void AddNextSkill()
+    {
+        SkillPanel skillPanel = GameObject.Find("SkillPanel").GetComponent<SkillPanel>();
+        List<string> spellNames = new List<string>();
+        foreach (Spell nextSpell in _nextSpells)
+        {
+            spellNames.Add(nextSpell.name);
+        }
+        skillPanel.SetSkillSelectButton(_nextSpells, spellNames);
     }
 
     private IEnumerator DelayedFadeOut(float delay)

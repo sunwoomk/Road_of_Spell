@@ -8,12 +8,19 @@ public class InGameManager : MonoBehaviour
 
     private GameObject _canvas;
 
+    private GameObject _skillRangePanel;
+
     [SerializeField]
     private string _playerName;
 
     [SerializeField]
     private List<string> _playerSkills = new List<string>(); 
     private List<GameObject> _skillLevelUpButtons = new List<GameObject>();
+
+    public GameObject Canvas { get { return _canvas; } }
+    public Player Player { get { return _player; } }
+
+    public GameObject SkillRangePanel { get { return _skillRangePanel; } }
 
     public static InGameManager Instance { get; private set; }
 
@@ -34,6 +41,7 @@ public class InGameManager : MonoBehaviour
     private void Start()
     {
         _canvas = GameObject.Find("Canvas");
+        _skillRangePanel = GameObject.Find("SkillRangePanel");
         SetPlayer(_playerName);
         SetSkillPanel(_playerSkills);
         StageManager.Instance.SpawnMonsters();
@@ -54,8 +62,10 @@ public class InGameManager : MonoBehaviour
     {
         GameObject skillPanelPrefab = Resources.Load<GameObject>("Prefabs/UI/SkillPanel");
         GameObject skillPanel = Instantiate(skillPanelPrefab, _canvas.transform);
+        skillPanel.name = "SkillPanel";
         SkillPanel skillPanelScript = skillPanel.GetComponent<SkillPanel>();
         skillPanelScript.SetSkills(playerSkills, _player);
+        skillPanelScript.CreateSkillSelectButton();
     }
 
     public void AddSkillLevelUpButton(GameObject button)

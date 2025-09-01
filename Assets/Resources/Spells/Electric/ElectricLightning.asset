@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce5205bd079d89b41b8f0333a044ba7b, type: 3}
   m_Name: ElectricLightning
   m_EditorClassIdentifier: 
-  tempNum: 3
   element: electric
   tier: 3
   baseDamage: 200
@@ -30,3 +29,5 @@ MonoBehaviour:
   - {x: -2, y: -2}
   - {x: 2, y: -2}
   effectType: Multy
+  nextSpells:
+  - {fileID: 11400000, guid: b3414b1f37af7b84f87c75bb5a36eb58, type: 2}

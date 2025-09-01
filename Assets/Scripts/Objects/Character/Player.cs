@@ -3,11 +3,13 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public List<int> _maxExpList = new List<int>
+    private List<int> _maxExpList = new List<int>
     {
         100, 200, 350, 550, 800, 1100, 1450, 1850, 2300, 2800,
         3350, 3950, 4600, 5300, 6050, 6850, 7700, 8600, 9550, 10500
     };
+
+    private int _maxLevel = 20;
 
     [SerializeField] private float _power;
     [SerializeField] private int _level = 1;
@@ -19,6 +21,13 @@ public class Player : MonoBehaviour
 
     private Animator _animator;
 
+    public float Power
+    {
+        get { return _power; }
+    }
+
+    public int Mana { get { return _curMana; } }
+
     private void Start()
     {
         _animator = GetComponent<Animator>();
@@ -26,12 +35,17 @@ public class Player : MonoBehaviour
         _maxExp = _maxExpList[0];
     }
 
-    public float Power
+    private void Update()
     {
-        get { return _power; }
+        if (_skillLevelUpPoint >= 1)
+        {
+            InGameManager.Instance.SetActiveSkillLevelUpButtons(true);
+        }
+        else
+        {
+            InGameManager.Instance.SetActiveSkillLevelUpButtons(false);
+        }
     }
-
-    public int Mana { get { return _curMana; } }
 
     public void UseMana(int amount)
     {
@@ -48,8 +62,8 @@ public class Player : MonoBehaviour
 
     public void AddExp(int exp)
     {
-        _curExp += exp;
-        if (_curExp >= _maxExp)
+        _curExp += exp * 100;
+        while (_curExp >= _maxExp)
         {
             LevelUp();
         }
@@ -58,10 +72,10 @@ public class Player : MonoBehaviour
     public void UseSkillLevelUpPoint()
     {
         _skillLevelUpPoint--;
-        if(_skillLevelUpPoint <= 0)
-        {
-            InGameManager.Instance.SetActiveSkillLevelUpButtons(false);
-        }
+        //if(_skillLevelUpPoint <= 0)
+        //{
+        //    InGameManager.Instance.SetActiveSkillLevelUpButtons(false);
+        //}
     }
 
     public void CastSpellAnimation()
@@ -72,10 +86,15 @@ public class Player : MonoBehaviour
     private void LevelUp()
     {
         _curExp -= _maxExp;
+        if (_level >= _maxLevel)
+        {
+            _curExp = 0;
+            return;
+        }
         _level += 1;
         _maxMana += 1;
         _maxExp = _maxExpList[_level - 1];
         _skillLevelUpPoint += 1;
-        InGameManager.Instance.SetActiveSkillLevelUpButtons(true);
+        //InGameManager.Instance.SetActiveSkillLevelUpButtons(true);
     }
 }

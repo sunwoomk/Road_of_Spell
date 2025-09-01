@@ -156,7 +156,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5a9701316455ff4391f7216c50ba9e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _maxExpList: 
   _power: 0
+  _level: 1
+  _curExp: 0
+  _maxExp: 0
+  _skillLevelUpPoint: 0
 --- !u!1 &9180948666131761036
 GameObject:
   m_ObjectHideFlags: 0

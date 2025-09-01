@@ -348,7 +348,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c75bb7df38bf07458519a23e0d7ff5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uiCanvas: {fileID: 0}
   fadeOverlayMaterial: {fileID: 2100000, guid: b42413b768029394f84cbbb7344cc44c, type: 2}
   _skillRangePanel: {fileID: 0}
 --- !u!1 &7082448956228276388
@@ -387,7 +386,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 138.8}
-  m_SizeDelta: {x: 40, y: 40}
+  m_SizeDelta: {x: 60, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2522969500238708752
 CanvasRenderer:

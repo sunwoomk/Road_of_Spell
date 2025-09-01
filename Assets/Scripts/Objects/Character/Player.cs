@@ -13,8 +13,9 @@ public class Player : MonoBehaviour
     [SerializeField] private int _level = 1;
     [SerializeField] private int _curExp;
     [SerializeField] private int _maxExp;
-    [SerializeField] private int _curMana = 1;
-    [SerializeField] private int _maxMana = 1;
+    private int _curMana = 10;
+    private int _maxMana = 10;
+    [SerializeField] private int _skillLevelUpPoint = 0;
 
     private Animator _animator;
 
@@ -54,6 +55,15 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void UseSkillLevelUpPoint()
+    {
+        _skillLevelUpPoint--;
+        if(_skillLevelUpPoint <= 0)
+        {
+            InGameManager.Instance.SetActiveSkillLevelUpButtons(false);
+        }
+    }
+
     public void CastSpellAnimation()
     {
         _animator.SetTrigger("CastSpell");
@@ -65,5 +75,7 @@ public class Player : MonoBehaviour
         _level += 1;
         _maxMana += 1;
         _maxExp = _maxExpList[_level - 1];
+        _skillLevelUpPoint += 1;
+        InGameManager.Instance.SetActiveSkillLevelUpButtons(true);
     }
 }

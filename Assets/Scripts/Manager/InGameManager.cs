@@ -13,6 +13,7 @@ public class InGameManager : MonoBehaviour
 
     [SerializeField]
     private List<string> _playerSkills = new List<string>(); 
+    private List<GameObject> _skillLevelUpButtons = new List<GameObject>();
 
     public static InGameManager Instance { get; private set; }
 
@@ -55,5 +56,18 @@ public class InGameManager : MonoBehaviour
         GameObject skillPanel = Instantiate(skillPanelPrefab, _canvas.transform);
         SkillPanel skillPanelScript = skillPanel.GetComponent<SkillPanel>();
         skillPanelScript.SetSkills(playerSkills, _player);
+    }
+
+    public void AddSkillLevelUpButton(GameObject button)
+    {
+        _skillLevelUpButtons.Add(button);
+    }
+
+    public void SetActiveSkillLevelUpButtons(bool isActive)
+    {
+        foreach (GameObject button in _skillLevelUpButtons)
+        {
+            button.SetActive(isActive);
+        }
     }
 }

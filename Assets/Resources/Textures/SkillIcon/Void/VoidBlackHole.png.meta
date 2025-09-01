@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: d39d60374c7fed942b7c14ed992c272e
+guid: 5888fbe4f79964f4dacc68e327944ba3
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4369448126970940680
-    second: generated-image-removebg-preview_0
+      213: -9208200438439121303
+    second: VoidBlackHole_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: generated-image-removebg-preview_0
+      name: VoidBlackHole_0
       rect:
         serializedVersion: 2
-        x: 28
-        y: 24
-        width: 445
-        height: 445
+        x: 56
+        y: 58
+        width: 914
+        height: 914
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8f2b66f241a9c53c0800000000000000
-      internalID: -4369448126970940680
+      spriteID: 96e6d360d76e53080800000000000000
+      internalID: -9208200438439121303
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      generated-image-removebg-preview_0: -4369448126970940680
+      VoidBlackHole_0: -9208200438439121303
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

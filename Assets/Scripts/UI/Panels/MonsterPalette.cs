@@ -19,7 +19,7 @@ public class MonsterPalette : MonoBehaviour
             GameObject monsterDragButton = Instantiate(_monsterDragButtonPrefab, content);
             monsterDragButton.GetComponent<MonsterDragButton>().Init(i);
 
-            Sprite newSprite = Resources.Load<Sprite>("Textures/Monster" + i);
+            Sprite newSprite = Resources.Load<Sprite>("Textures/MonsterIcon/Monster" + i);
             Image image = monsterDragButton.GetComponent<Image>();
             image.sprite = newSprite;
         }

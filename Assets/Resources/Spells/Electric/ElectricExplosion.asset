@@ -21,3 +21,4 @@ MonoBehaviour:
   range:
   - {x: 0, y: 0}
   effectType: Single
+  parentSpells: []

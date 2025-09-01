@@ -18,11 +18,11 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
 
     private GameObject _levelIcon;
     private GameObject _costIcon;
-    private GameObject _skillLevelUpIcon;
+    private GameObject _skillLevelUpButton;
     [SerializeField] private GameObject _skillRangePanel;
     private TextMeshProUGUI _levelText;
     private TextMeshProUGUI _costText;
-    private Button _skillLevelUpButton;
+    private Button _button;
 
     private float _damage;
     private int _skillLevel = 1;
@@ -51,15 +51,6 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
     {
         _levelText.text = _skillLevel.ToString();
         _costText.text = _cost.ToString();
-
-        if(_levelUpPoint >= 1)
-        {
-            _skillLevelUpIcon.SetActive(true);
-        }
-        else
-        {
-            _skillLevelUpIcon.SetActive(false);
-        }
     }
 
     public void OnPointerDown(PointerEventData eventData) // 처음 터치했을 때
@@ -120,21 +111,17 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
     {
         _levelIcon = transform.Find("LevelIcon").gameObject;
         _costIcon = transform.Find("CostIcon").gameObject;
-        _skillLevelUpIcon = transform.Find("SkillLevelUpButton").gameObject;
+        _skillLevelUpButton = transform.Find("SkillLevelUpButton").gameObject;
+        InGameManager.Instance.AddSkillLevelUpButton(_skillLevelUpButton);
 
         _levelText = _levelIcon.transform.Find("LevelText").gameObject.GetComponent<TextMeshProUGUI>();
         _costText = _costIcon.transform.Find("CostText").gameObject.GetComponent<TextMeshProUGUI>();
-        _skillLevelUpButton = _skillLevelUpIcon.GetComponent<Button>();
-        _skillLevelUpButton.onClick.AddListener(SkillLevelUp);
+        _button = _skillLevelUpButton.GetComponent<Button>();
+        _button.onClick.AddListener(SkillLevelUp);
 
         _levelIcon.SetActive(false);
         _costIcon.SetActive(false);
-        _skillLevelUpIcon.SetActive(false);
-    }
-
-    public void AddSkillLevelUpPoint()
-    {
-        _levelUpPoint += 1;
+        _skillLevelUpButton.SetActive(false);
     }
 
     private void LoadSpellData(Spell spell)
@@ -172,7 +159,9 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
 
     private void SkillLevelUp()
     {
+        Debug.Log("SkillLevelUp!" + _spellName + "SkillLevel : " + _skillLevel);
         _skillLevel += 1;
+        _player.UseSkillLevelUpPoint();
     }
 
     private IEnumerator DelayedFadeOut(float delay)

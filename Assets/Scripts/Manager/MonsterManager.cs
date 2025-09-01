@@ -13,8 +13,9 @@ public class MonsterManager : MonoBehaviour
         private int _speed;
         private int _levelPerHp;
         private int _levelPerDefence;
+        private int _dropExp;
 
-        public MonsterData(int key, string name, int power, int hp, int baseDefense, int speed, int levelPerHp, int levelPerDefence)
+        public MonsterData(int key, string name, int power, int hp, int baseDefense, int speed, int levelPerHp, int levelPerDefence, int dropExp)
         {
             this.key = key;
             this.name = name;
@@ -24,6 +25,7 @@ public class MonsterManager : MonoBehaviour
             this._speed = speed;
             this._levelPerHp = levelPerHp;
             this._levelPerDefence = levelPerDefence;
+            this._dropExp = dropExp;
         }
 
         public int Key => key;
@@ -34,9 +36,11 @@ public class MonsterManager : MonoBehaviour
         public int Speed => _speed;
         public int LevelPerHp => _levelPerHp;
         public int LevelPerDefence => _levelPerDefence;
+        public int DropExp => _dropExp;
     }
 
     [SerializeField] private Canvas _uiCanvas;
+    private Player _player;
     private List<MonsterData> _allMonsterData = new List<MonsterData>();
     public List<MonsterData> AllMonsterData => _allMonsterData;
 
@@ -82,11 +86,17 @@ public class MonsterManager : MonoBehaviour
                 int.Parse(tokens[4]),
                 int.Parse(tokens[5]),
                 int.Parse(tokens[6]),
-                int.Parse(tokens[7])
+                int.Parse(tokens[7]),
+                int.Parse(tokens[8])
             );
             monsterList.Add(monster);
         }
         return monsterList;
+    }
+
+    public void SetPlayer(Player player)
+    {
+        _player = player;
     }
 
     public void CreateMonster(int key, Vector2 worldPos, Vector2Int tilePos) // 실제로 타일 위에 몬스터를 생성하는 함수
@@ -104,6 +114,7 @@ public class MonsterManager : MonoBehaviour
         //해당 몬스터 스크립트에 데이터 전달 및 Dictionary에 추가
         Monster monsterScript = monsterInstance.GetComponent<Monster>();
         monsterScript.SetDatas(monsterData);
+        monsterScript.SetPlayer(_player);
         monsterScript.Position = tilePos;
         _monsters.Add(tilePos, monsterInstance);
     }

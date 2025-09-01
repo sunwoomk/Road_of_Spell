@@ -13,8 +13,10 @@ public class Monster : MonoBehaviour
     private float _currentHp;
     private float _defense;
     private int _speed;
+    private int _dropExp;
     private Vector2Int _position;
 
+    private Player _player;
     private Animator _animator;
 
     public Vector2Int Position
@@ -37,6 +39,12 @@ public class Monster : MonoBehaviour
         _currentHp = _maxHp;
         _defense = monsterData.BaseDefense;
         _speed = monsterData.Speed;
+        _dropExp = monsterData.DropExp;
+    }
+
+    public void SetPlayer(Player player)
+    {
+        _player = player;
     }
 
     public void MonsterMove(int moveDistance)
@@ -70,6 +78,7 @@ public class Monster : MonoBehaviour
     public void Dead()
     {
         _animator.SetTrigger("Dead");
+        _player.AddExp(_dropExp);
         StartCoroutine(WaitAndDestroy());
     }
 

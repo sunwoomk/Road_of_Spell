@@ -6,24 +6,21 @@ public class SkillPanel : MonoBehaviour
 {
     private const float SkillButtonSize = 200f;
 
-    [SerializeField] private List<string> _playerSkills = new List<string>();
+    private List<string> _playerSkills = new List<string>();
 
     private GameObject _skillButtonPrefab;
-
-    private void Start()
-    {
-        _skillButtonPrefab = Resources.Load<GameObject>("Prefabs/UI/SkillButton");
-        SetSkills();
-    }
-
 
     public void AddSkill(string skillName)
     {
         _playerSkills.Add(skillName);
     }
 
-    public void SetSkills()
+    public void SetSkills(List<string> playerSkills, Player player)
     {
+        _playerSkills = playerSkills;
+
+        _skillButtonPrefab = Resources.Load<GameObject>("Prefabs/UI/SkillButton");
+
         for (int i = 0; i < _playerSkills.Count; i++)
         {
             //List<string> _playerSkills 안에있는 스킬 이름들을 바탕으로 스킬 생성
@@ -36,7 +33,7 @@ public class SkillPanel : MonoBehaviour
             rt.anchoredPosition = new Vector2(-900 + i * SkillButtonSize, 0);
 
             PlayerSkillButton skillButtonScript = skillButton.GetComponent<PlayerSkillButton>();
-            skillButtonScript.Init(skillName);
+            skillButtonScript.Init(skillName, player);
         }
 
         GameObject skillRangePanel = GameObject.Find("SkillRangePanel");

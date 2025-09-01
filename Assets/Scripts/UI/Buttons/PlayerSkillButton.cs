@@ -13,17 +13,20 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
 
     private Player _player;
     private Spell _spell;
-    [SerializeField] private Canvas _uiCanvas;
+    private Canvas _uiCanvas;
     [SerializeField] private Material fadeOverlayMaterial;
 
     private GameObject _levelIcon;
     private GameObject _costIcon;
+    private GameObject _skillLevelUpIcon;
     [SerializeField] private GameObject _skillRangePanel;
     private TextMeshProUGUI _levelText;
     private TextMeshProUGUI _costText;
+    private Button _skillLevelUpButton;
 
     private float _damage;
-    private int _skillLevel = 0;
+    private int _skillLevel = 1;
+    private int _levelUpPoint = 0;
     private List<Vector2Int> _baseRangeOffsets = new List<Vector2Int>();
     private Vector2Int _center = new Vector2Int();
     private List<Vector2Int> _spellHitPositions = new List<Vector2Int>();
@@ -48,10 +51,63 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
     {
         _levelText.text = _skillLevel.ToString();
         _costText.text = _cost.ToString();
+
+        if(_levelUpPoint >= 1)
+        {
+            _skillLevelUpIcon.SetActive(true);
+        }
+        else
+        {
+            _skillLevelUpIcon.SetActive(false);
+        }
     }
 
-    public void Init(string skillName)
+    public void OnPointerDown(PointerEventData eventData) // 처음 터치했을 때
     {
+        if (_player.Mana < _cost) return;
+
+        _levelIcon.SetActive(true);
+        _costIcon.SetActive(true);
+        _skillRangePanel.SetActive(true);
+        SkillRangePanel skillRangePanel = _skillRangePanel.GetComponent<SkillRangePanel>();
+        skillRangePanel.SetTiles(_baseRangeOffsets);
+
+        _isDragging = true;
+        UpdateSpellTilePosition(eventData);
+        StartFadeIn();
+
+        _player.UseMana(_cost);
+    }
+
+    public void OnDrag(PointerEventData eventData) //드래그 하는 도중일 때
+    {
+        if (_isDragging)
+        {
+            //스펠을 시전할 중심 좌표 업데이트
+            UpdateSpellTilePosition(eventData);
+        }
+    }
+
+    public void OnPointerUp(PointerEventData eventData) //손을 땠을 때
+    {
+        _levelIcon.SetActive(false);
+        _costIcon.SetActive(false);
+        _skillRangePanel.SetActive(false);
+
+        if (_isDragging)
+        {
+            _isDragging = false;
+            CastSpell();
+            TileManager.Instance.SetSkillPreviewActive(false);
+        }
+
+        StartCoroutine(DelayedFadeOut(EffectDuration));
+    }
+
+    public void Init(string skillName, Player player)
+    {
+        _player = player.GetComponent<Player>();
+
         _skillRangePanel = GameObject.Find("SkillRangePanel");
         _uiCanvas = GameObject.Find("Canvas").GetComponent<Canvas>();
 
@@ -60,22 +116,25 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
         LoadSpellData(_spell);
     }
 
-    public void SetPlayer()
-    {
-        GameObject player = GameObject.FindWithTag("Player");
-        _player = player.GetComponent<Player>();
-    }
-
     public void SetIcons()
     {
         _levelIcon = transform.Find("LevelIcon").gameObject;
         _costIcon = transform.Find("CostIcon").gameObject;
+        _skillLevelUpIcon = transform.Find("SkillLevelUpButton").gameObject;
 
         _levelText = _levelIcon.transform.Find("LevelText").gameObject.GetComponent<TextMeshProUGUI>();
         _costText = _costIcon.transform.Find("CostText").gameObject.GetComponent<TextMeshProUGUI>();
+        _skillLevelUpButton = _skillLevelUpIcon.GetComponent<Button>();
+        _skillLevelUpButton.onClick.AddListener(SkillLevelUp);
 
         _levelIcon.SetActive(false);
         _costIcon.SetActive(false);
+        _skillLevelUpIcon.SetActive(false);
+    }
+
+    public void AddSkillLevelUpPoint()
+    {
+        _levelUpPoint += 1;
     }
 
     private void LoadSpellData(Spell spell)
@@ -105,48 +164,15 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
     {
         float damage = 0;
 
-        //damage = _baseDamage + _damagePerLevel * _skillLevel + _player.Power * _damageRatio;
-        damage = _baseDamage + _damagePerLevel * _skillLevel;
+        damage = _baseDamage + _damagePerLevel * (_skillLevel - 1) + _player.Power * _damageRatio;
+        //damage = _baseDamage + _damagePerLevel * _skillLevel;
 
         _damage = damage;
     }
 
-    public void OnPointerDown(PointerEventData eventData) // 처음 터치했을 때
+    private void SkillLevelUp()
     {
-        _levelIcon.SetActive(true);
-        _costIcon.SetActive(true);
-        _skillRangePanel.SetActive(true);
-        SkillRangePanel skillRangePanel = _skillRangePanel.GetComponent<SkillRangePanel>();
-        skillRangePanel.SetTiles(_baseRangeOffsets);
-
-        _isDragging = true;
-        UpdateSpellTilePosition(eventData);
-        StartFadeIn();
-    }
-
-    public void OnDrag(PointerEventData eventData) //드래그 하는 도중일 때
-    {
-        if (_isDragging)
-        {
-            //스펠을 시전할 중심 좌표 업데이트
-            UpdateSpellTilePosition(eventData);
-        }
-    }
-
-    public void OnPointerUp(PointerEventData eventData) //손을 땠을 때
-    {
-        _levelIcon.SetActive(false);
-        _costIcon.SetActive(false);
-        _skillRangePanel.SetActive(false);
-
-        if (_isDragging)
-        {
-            _isDragging = false;
-            CastSpell();
-            TileManager.Instance.SetSkillPreviewActive(false);
-        }
-
-        StartCoroutine(DelayedFadeOut(EffectDuration));
+        _skillLevel += 1;
     }
 
     private IEnumerator DelayedFadeOut(float delay)
@@ -180,6 +206,8 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
 
     private void CastSpell()
     {
+        _player.CastSpellAnimation();
+
         SetDamage();
 
         _spellHitPositions.Clear();

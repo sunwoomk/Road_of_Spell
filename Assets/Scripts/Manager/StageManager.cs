@@ -24,6 +24,8 @@ public class StageManager : MonoBehaviour
     [SerializeField]
     private Canvas _uiCanvas;
 
+    private Player _player;
+
     private int _currentRound = 0;
     private int _currentStage = 0;
 
@@ -47,11 +49,6 @@ public class StageManager : MonoBehaviour
         LoadStageJson();
     }
 
-    private void Start()
-    {
-        SpawnMonsters();
-    }
-
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.G))
@@ -60,14 +57,20 @@ public class StageManager : MonoBehaviour
         }
     }
 
+    public void SetPlayer(Player player)
+    {
+        _player = player;
+    }
+
     private void TurnEnd()
     {
         _currentRound++;
         MonsterManager.Instance.AllMonstersMove();
         SpawnMonsters();
+        _player.RefillMana();
     }
 
-    private void SpawnMonsters()  // 현재 라운드에 해당하는 몬스터들을 스폰하는 함수
+    public void SpawnMonsters()  // 현재 라운드에 해당하는 몬스터들을 스폰하는 함수
     {
         // x 값이 현재 라운드와 같은 요소만 추출
         List<MonsterSpawnData> spawnsThisRound = _testStage.monsterSpawns.FindAll(m => m.x == _currentRound - 1);

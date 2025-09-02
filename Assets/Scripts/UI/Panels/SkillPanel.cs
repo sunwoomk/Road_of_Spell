@@ -6,7 +6,9 @@ using UnityEngine.UI;
 public class SkillPanel : MonoBehaviour
 {
     private const float SkillButtonSize = 200f;
+    private const float StartSkillButtonPosX = -900f;
     private const float SkillSelectButtonSpacing = 250f;
+    private const float SkillSelectButtonHeight = 140f;
     private const int MaxSkillSelectButtons = 2;
 
     private List<string> _playerSkills = new List<string>();
@@ -22,7 +24,7 @@ public class SkillPanel : MonoBehaviour
         skillButton.name = skillName;
 
         RectTransform rt = skillButton.GetComponent<RectTransform>();
-        rt.anchoredPosition = new Vector2(-900 + _playerSkills.Count * SkillButtonSize, 0);
+        rt.anchoredPosition = new Vector2(StartSkillButtonPosX + _playerSkills.Count * SkillButtonSize, 0);
 
         PlayerSkillButton skillButtonScript = skillButton.GetComponent<PlayerSkillButton>();
         skillButtonScript.Init(skillName, _player);
@@ -52,7 +54,7 @@ public class SkillPanel : MonoBehaviour
 
             // 위치 설정: 왼쪽 정렬, 가로로 SkillButtonSize 간격으로 배치
             RectTransform rt = skillButton.GetComponent<RectTransform>();
-            rt.anchoredPosition = new Vector2(-900 + i * SkillButtonSize, 0);
+            rt.anchoredPosition = new Vector2(StartSkillButtonPosX + i * SkillButtonSize, 0);
 
             PlayerSkillButton skillButtonScript = skillButton.GetComponent<PlayerSkillButton>();
             skillButtonScript.Init(skillName, _player);
@@ -82,7 +84,7 @@ public class SkillPanel : MonoBehaviour
         if (nextSpells.Count == 1)
         {
             SetSkillData(nextSpells, spellNames, 0);
-            _skillSelectButtons[0].GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 140);
+            _skillSelectButtons[0].GetComponent<RectTransform>().anchoredPosition = new Vector2(0, SkillSelectButtonHeight);
         }
 
         else if (nextSpells.Count == 2)
@@ -90,18 +92,10 @@ public class SkillPanel : MonoBehaviour
             for (int i = 0; i < nextSpells.Count; i++)
             {
                 SetSkillData(nextSpells, spellNames, i);
-                _skillSelectButtons[i].GetComponent<RectTransform>().anchoredPosition = new Vector2(SkillSelectButtonSpacing * (i * 2 - 1), 140);
+                _skillSelectButtons[i].GetComponent<RectTransform>().anchoredPosition = new Vector2(SkillSelectButtonSpacing * (i * 2 - 1), SkillSelectButtonHeight);
             }
         }
     }
-
-    //private void DeactivateSkillSelectButtons()
-    //{
-    //    foreach (GameObject button in _skillSelectButtons)
-    //    {
-    //        button.SetActive(false);
-    //    }
-    //}
 
     private void SetSkillData(List<Spell> nextSpells, List<string> spellNames, int index)
     {

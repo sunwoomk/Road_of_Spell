@@ -15,8 +15,8 @@ public class Player : MonoBehaviour
     [SerializeField] private int _level = 1;
     [SerializeField] private int _curExp;
     [SerializeField] private int _maxExp;
-    private int _curMana = 10;
-    private int _maxMana = 10;
+    private int _curMana = 1;
+    private int _maxMana = 1;
     [SerializeField] private int _skillLevelUpPoint = 0;
 
     private Animator _animator;
@@ -26,7 +26,8 @@ public class Player : MonoBehaviour
         get { return _power; }
     }
 
-    public int Mana { get { return _curMana; } }
+    public int CurMana { get { return _curMana; } }
+    public int MaxMana { get { return _maxMana; } }
 
     private void Start()
     {
@@ -49,7 +50,7 @@ public class Player : MonoBehaviour
 
     public void UseMana(int amount)
     {
-        if (amount >= _curMana)
+        if (amount <= _curMana)
         {
             _curMana -= amount;
         }
@@ -62,7 +63,7 @@ public class Player : MonoBehaviour
 
     public void AddExp(int exp)
     {
-        _curExp += exp * 100;
+        _curExp += exp * 10;
         while (_curExp >= _maxExp)
         {
             LevelUp();
@@ -95,6 +96,7 @@ public class Player : MonoBehaviour
         _maxMana += 1;
         _maxExp = _maxExpList[_level - 1];
         _skillLevelUpPoint += 1;
+        Debug.Log("LevelUp! 현재 레벨 : " +  _level);
         //InGameManager.Instance.SetActiveSkillLevelUpButtons(true);
     }
 }

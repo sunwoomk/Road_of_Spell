@@ -52,7 +52,7 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
 
     public void OnPointerDown(PointerEventData eventData) // 처음 터치했을 때
     {
-        if (_player.Mana < _cost) return;
+        if (_player.CurMana < _cost) return;
 
         _levelIcon.SetActive(true);
         _costIcon.SetActive(true);
@@ -63,8 +63,6 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
         _isDragging = true;
         UpdateSpellTilePosition(eventData);
         StartFadeIn();
-
-        _player.UseMana(_cost);
     }
 
     public void OnDrag(PointerEventData eventData) //드래그 하는 도중일 때
@@ -90,6 +88,8 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
         }
 
         StartCoroutine(DelayedFadeOut(EffectDuration));
+
+        _player.UseMana(_cost);
     }
 
     public void Init(string skillName, Player player)

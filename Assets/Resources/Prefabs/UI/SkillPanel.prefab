@@ -35,7 +35,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 100, y: -500}
+  m_AnchoredPosition: {x: 170, y: -430}
   m_SizeDelta: {x: 2000, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &743950326814752559
@@ -88,10 +88,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d652796b260667489b81d6700a7c7a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerSkills:
-  - ElectricExplosion
-  - ElectricSphere
-  - ElectricTornado
-  - ElectricLightning
-  - ElectricSpin
-  - ElectricNova

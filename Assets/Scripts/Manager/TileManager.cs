@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 
 public class TileManager : MonoBehaviour
 {
-    public static readonly Vector2 StartTilePos = new Vector2(-5.5f, 3f);
+    public static readonly Vector2 StartTilePos = new Vector2(-5f, 3.5f);
 
     public static int TileWidth = 10;
     public static int TileHeight = 5;

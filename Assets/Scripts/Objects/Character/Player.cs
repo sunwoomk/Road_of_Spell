@@ -28,6 +28,8 @@ public class Player : MonoBehaviour
 
     public int CurMana { get { return _curMana; } }
     public int MaxMana { get { return _maxMana; } }
+    public int CurExp { get { return _curExp; } }
+    public int MaxExp { get { return _maxExp; } }
 
     private void Start()
     {
@@ -63,7 +65,7 @@ public class Player : MonoBehaviour
 
     public void AddExp(int exp)
     {
-        _curExp += exp * 10;
+        _curExp += exp;
         while (_curExp >= _maxExp)
         {
             LevelUp();

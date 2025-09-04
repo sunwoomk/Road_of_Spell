@@ -3,25 +3,25 @@ using UnityEngine.UI;
 
 public class ExpBar : MonoBehaviour
 {
-    [SerializeField] private Slider _slider;
-    [SerializeField] private Material _material;
-    [SerializeField] private float _cycleDuration = 2.0f; // 1회 왕복 시간(초)
+    private Slider _slider;
 
-    void Start()
+    private Player _player;
+
+    private void Start()
     {
-        _slider.onValueChanged.AddListener(OnSliderValueChanged);
-        OnSliderValueChanged(_slider.value);
+        _slider = GetComponent<Slider>();
     }
 
-    void Update()
+    private void Update()
     {
-        // 시간이 흐를수록 0~1로 올라갔다가 다시 0으로 내려가도록 슬라이더 값 갱신
-        float t = Mathf.PingPong(Time.time / _cycleDuration, 1f);
-        _slider.value = t;
+        if (_player != null)
+        {
+            _slider.value = (float)_player.CurExp / (float)_player.MaxExp;
+        }
     }
 
-    void OnSliderValueChanged(float value)
+    public void SetPlayer(Player player)
     {
-        _material.SetFloat("_FillAmount", value);
+        _player = player;
     }
 }

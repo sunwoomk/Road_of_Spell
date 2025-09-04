@@ -5387,8 +5387,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8580ff25df425c4aa4197e56930a1e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _slider: {fileID: 1086161722}
-  _material: {fileID: 2100000, guid: d5c4f21786a0e4745b14ef30d1aa962d, type: 2}
 --- !u!1 &1103129638
 GameObject:
   m_ObjectHideFlags: 0
@@ -6674,8 +6672,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: d5c4f21786a0e4745b14ef30d1aa962d, type: 2}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.5377358, g: 0.03804734, b: 0.4166932, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

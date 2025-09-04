@@ -56,6 +56,7 @@ public class InGameManager : MonoBehaviour
         StageManager.Instance.SetPlayer(_player);
         MonsterManager.Instance.SetPlayer(_player);
         GameObject.Find("ManaPanel").GetComponent<ManaPanel>().SetPlayer(_player);
+        GameObject.Find("ExpBar").GetComponent<ExpBar>().SetPlayer(_player);
     }
 
     //나중에 ReadyScene에서 호출할 예정

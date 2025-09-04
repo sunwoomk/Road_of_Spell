@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using Unity.VisualScripting;
+using UnityEngine.UI;
+using TMPro;
 
 public class StageManager : MonoBehaviour
 {
@@ -19,15 +21,14 @@ public class StageManager : MonoBehaviour
         public List<MonsterSpawnData> monsterSpawns;
     }
 
-    [SerializeField]
-    private Stage _testStage;
-    [SerializeField]
-    private Canvas _uiCanvas;
-
+    private Stage _currentStage;
+    private Button _endTurnButton;
+    private TextMeshProUGUI _currentRoundText;
     private Player _player;
+    private Canvas _canvas;
 
-    private int _currentRound = 0;
-    private int _currentStage = 0;
+    private int _currentRoundCount = 0;
+    private int _currentStageCount = 0;
 
     public static StageManager Instance { get; private set; }
 
@@ -43,18 +44,19 @@ public class StageManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        _currentRound++;
-        _currentStage++;
+        _currentRoundCount++;
+        _currentStageCount++;
 
         LoadStageJson();
     }
 
-    private void Update()
+    private void Start()
     {
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            TurnEnd();
-        }
+        _canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
+        _endTurnButton = _canvas.transform.Find("EndTurnButton").GetComponent<Button>();
+        _endTurnButton.onClick.AddListener(TurnEnd);
+        _currentRoundText = _canvas.transform.Find("CurrentRound").transform.Find("CurrentRoundText").GetComponent<TextMeshProUGUI>();
+        _currentRoundText.text = _currentRoundCount.ToString();
     }
 
     public void SetPlayer(Player player)
@@ -64,7 +66,8 @@ public class StageManager : MonoBehaviour
 
     private void TurnEnd()
     {
-        _currentRound++;
+        _currentRoundCount++;
+        _currentRoundText.text = _currentRoundCount.ToString();
         MonsterManager.Instance.AllMonstersMove();
         SpawnMonsters();
         _player.RefillMana();
@@ -73,7 +76,7 @@ public class StageManager : MonoBehaviour
     public void SpawnMonsters()  // 현재 라운드에 해당하는 몬스터들을 스폰하는 함수
     {
         // x 값이 현재 라운드와 같은 요소만 추출
-        List<MonsterSpawnData> spawnsThisRound = _testStage.monsterSpawns.FindAll(m => m.x == _currentRound - 1);
+        List<MonsterSpawnData> spawnsThisRound = _currentStage.monsterSpawns.FindAll(m => m.x == _currentRoundCount - 1);
 
         Vector2 startTilePos = new Vector2(
             TileManager.StartTilePos.x + TileManager.TileSize * (TileManager.TileWidth - 1),
@@ -118,12 +121,12 @@ public class StageManager : MonoBehaviour
 
     private void LoadStageJson()
     {
-        string filePath = Application.dataPath + "/Resources/Stages/Stage" + _currentStage + ".json";
+        string filePath = Application.dataPath + "/Resources/Stages/Stage" + _currentStageCount + ".json";
 
         if (File.Exists(filePath))
         {
             string json = File.ReadAllText(filePath);
-            _testStage = JsonUtility.FromJson<Stage>(json);
+            _currentStage = JsonUtility.FromJson<Stage>(json);
             Debug.Log("Stage data loaded successfully.");
         }
         else

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 29af940d3ad0bea46813fd44c73d1f12
+guid: db2f8079eda2fea4fb856a9d57c66270
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3607488891998342140
-    second: ExpBar3_0
+      213: -2058006987662700695
+    second: EndTurnButton3_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ExpBar3_0
+      name: EndTurnButton3_0
       rect:
         serializedVersion: 2
-        x: 26
-        y: 34
-        width: 937
-        height: 128
+        x: 30
+        y: 116
+        width: 449
+        height: 259
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: cfb8ab2b800601230800000000000000
-      internalID: 3607488891998342140
+      spriteID: 96fc71b6c8d7073e0800000000000000
+      internalID: -2058006987662700695
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      ExpBar3_0: 3607488891998342140
+      EndTurnButton3_0: -2058006987662700695
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

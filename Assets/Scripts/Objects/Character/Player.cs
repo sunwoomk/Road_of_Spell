@@ -30,6 +30,7 @@ public class Player : MonoBehaviour
     public int MaxMana { get { return _maxMana; } }
     public int CurExp { get { return _curExp; } }
     public int MaxExp { get { return _maxExp; } }
+    public int Level {  get { return _level; } }
 
     private void Start()
     {

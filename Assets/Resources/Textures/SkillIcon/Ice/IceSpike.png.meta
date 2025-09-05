@@ -116,12 +116,12 @@ TextureImporter:
       name: IceSpike_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 75
         y: 0
-        width: 948
+        width: 875
         height: 954
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -138,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 86fd77591728210429c6cc9f21733fde
     internalID: 0
     vertices: []
     indices: 

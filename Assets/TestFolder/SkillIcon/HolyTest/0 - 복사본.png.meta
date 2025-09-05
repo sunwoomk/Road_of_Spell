@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 70d392615c4cefd4a9af6fd4fd9919cc
+guid: 4c4444fe889e6184bbc267b27c01365e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5117590646590456522
-    second: ElectricSpin_0
+      213: 3229049211571208847
+    second: "0 - \uBCF5\uC0AC\uBCF8_0"
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ElectricSpin_0
+      name: "0 - \uBCF5\uC0AC\uBCF8_0"
       rect:
         serializedVersion: 2
-        x: 56
+        x: 52
         y: 58
-        width: 912
-        height: 914
+        width: 920
+        height: 918
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ac2c2e33495550740800000000000000
-      internalID: 5117590646590456522
+      spriteID: f8205f15623efcc20800000000000000
+      internalID: 3229049211571208847
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      ElectricSpin_0: 5117590646590456522
+      "0 - \uBCF5\uC0AC\uBCF8_0": 3229049211571208847
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

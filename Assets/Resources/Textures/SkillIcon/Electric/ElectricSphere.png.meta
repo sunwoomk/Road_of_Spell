@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 1b9428ada03828d428598b9929314343
+guid: 3e0568bb73523c445b956379037ceb5e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -480383711816134074
-    second: ElectricSphere_0
+      213: -1898877066550857408
+    second: ElectricSphere 1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ElectricSphere_0
+      name: ElectricSphere 1_0
       rect:
         serializedVersion: 2
         x: 56
         y: 58
         width: 912
-        height: 914
+        height: 912
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 642d05d2f855559f0800000000000000
-      internalID: -480383711816134074
+      spriteID: 041b9106e55d5a5e0800000000000000
+      internalID: -1898877066550857408
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      ElectricSphere_0: -480383711816134074
+      ElectricSphere 1_0: -1898877066550857408
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

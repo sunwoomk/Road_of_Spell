@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-public class SkillPanel : MonoBehaviour
+public class InGameSkillPanel : MonoBehaviour
 {
     private const float SkillButtonSize = 200f;
     private const float StartSkillButtonPosX = -900f;

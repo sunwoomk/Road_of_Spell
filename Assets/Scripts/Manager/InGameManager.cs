@@ -2,7 +2,7 @@ using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
 
-public class InGameManager : MonoBehaviour
+public class InGameManager : Singleton<InGameManager>
 {
     private Player _player;
 
@@ -10,10 +10,8 @@ public class InGameManager : MonoBehaviour
 
     private GameObject _skillRangePanel;
 
-    [SerializeField]
     private string _playerName;
 
-    [SerializeField]
     private List<string> _playerSkills = new List<string>(); 
     private List<GameObject> _skillLevelUpButtons = new List<GameObject>();
 
@@ -22,24 +20,12 @@ public class InGameManager : MonoBehaviour
 
     public GameObject SkillRangePanel { get { return _skillRangePanel; } }
 
-    public static InGameManager Instance { get; private set; }
-
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-
     //임시로 Start함수에서 호출
     private void Start()
     {
+        _playerName = GameDataManager.Instance.PlayerName;
+        _playerSkills = GameDataManager.Instance.SkillNames;
+
         _canvas = GameObject.Find("Canvas");
         _skillRangePanel = GameObject.Find("SkillRangePanel");
         SetPlayer(_playerName);
@@ -50,7 +36,7 @@ public class InGameManager : MonoBehaviour
     //나중에 ReadyScene에서 호출할 예정
     public void SetPlayer(string playerName)
     {
-        GameObject playerPrefab = Resources.Load<GameObject>("Prefabs/Characters/" + playerName);
+        GameObject playerPrefab = Resources.Load<GameObject>("Prefabs/Players/" + playerName);
         GameObject player = Instantiate(playerPrefab, _canvas.transform);
         _player = player.GetComponent<Player>();
         StageManager.Instance.SetPlayer(_player);
@@ -62,12 +48,12 @@ public class InGameManager : MonoBehaviour
     //나중에 ReadyScene에서 호출할 예정
     public void SetSkillPanel(List<string> playerSkills)
     {
-        GameObject skillPanelPrefab = Resources.Load<GameObject>("Prefabs/UI/SkillPanel");
-        GameObject skillPanel = Instantiate(skillPanelPrefab, _canvas.transform);
-        skillPanel.name = "SkillPanel";
-        SkillPanel skillPanelScript = skillPanel.GetComponent<SkillPanel>();
-        skillPanelScript.SetSkills(playerSkills, _player);
-        skillPanelScript.CreateSkillSelectButton();
+        GameObject inGameSkillPanelPrefab = Resources.Load<GameObject>("Prefabs/UI/InGameSkillPanel");
+        GameObject inGameSkillPanel = Instantiate(inGameSkillPanelPrefab, _canvas.transform);
+        inGameSkillPanel.name = "InGameSkillPanel";
+        InGameSkillPanel inGameSkillPanelScript = inGameSkillPanel.GetComponent<InGameSkillPanel>();
+        inGameSkillPanelScript.SetSkills(playerSkills, _player);
+        inGameSkillPanelScript.CreateSkillSelectButton();
     }
 
     public void AddSkillLevelUpButton(GameObject button)

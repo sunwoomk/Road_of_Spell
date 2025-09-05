@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 
-public class TileManager : MonoBehaviour
+public class TileManager : Singleton<TileManager>
 {
     public static readonly Vector2 StartTilePos = new Vector2(-5f, 3.5f);
 
@@ -17,21 +17,6 @@ public class TileManager : MonoBehaviour
 
     private Dictionary<Vector2Int, Tile> _tiles = new Dictionary<Vector2Int, Tile>();
     private List<GameObject> _skillPreviewOverlays = new List<GameObject>();
-
-    public static TileManager Instance { get; private set; }
-
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
 
     private void Start()
     {

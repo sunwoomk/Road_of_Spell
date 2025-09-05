@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 2506262583233459148}
   - component: {fileID: 743950326814752559}
   - component: {fileID: 1313615090962514351}
-  - component: {fileID: 3963101432542084982}
+  - component: {fileID: 6474162698156580430}
   m_Layer: 5
-  m_Name: SkillPanel
+  m_Name: InGameSkillPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76,7 +76,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &3963101432542084982
+--- !u!114 &6474162698156580430
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

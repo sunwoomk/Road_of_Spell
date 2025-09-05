@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class MonsterManager : MonoBehaviour
+public class MonsterManager : Singleton<MonsterManager>
 {
     public struct MonsterData
     {
@@ -47,20 +47,9 @@ public class MonsterManager : MonoBehaviour
     private Dictionary<Vector2Int, GameObject> _monsters = new Dictionary<Vector2Int, GameObject>();
     public Dictionary<Vector2Int, GameObject> Monsters => _monsters;
 
-    public static MonsterManager Instance { get; private set; }
-
-    private void Awake()
+    protected override void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-
+        base.Awake();
         _allMonsterData = LoadMonsterData("Tables/MonsterTable");
     }
 

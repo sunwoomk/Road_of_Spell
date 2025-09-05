@@ -27,7 +27,6 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
 
     private float _damage;
     private int _skillLevel = 1;
-    private int _levelUpPoint = 0;
     private List<Vector2Int> _baseRangeOffsets = new List<Vector2Int>();
     private Vector2Int _center = new Vector2Int();
     private List<Vector2Int> _spellHitPositions = new List<Vector2Int>();
@@ -174,13 +173,13 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
 
     private void AddNextSkill()
     {
-        SkillPanel skillPanel = GameObject.Find("SkillPanel").GetComponent<SkillPanel>();
+        InGameSkillPanel inGameSkillPanel = GameObject.Find("InGameSkillPanel").GetComponent<InGameSkillPanel>();
         List<string> spellNames = new List<string>();
         foreach (Spell nextSpell in _nextSpells)
         {
             spellNames.Add(nextSpell.name);
         }
-        skillPanel.SetSkillSelectButton(_nextSpells, spellNames);
+        inGameSkillPanel.SetSkillSelectButton(_nextSpells, spellNames);
     }
 
     private IEnumerator DelayedFadeOut(float delay)

@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine.UI;
 using TMPro;
 
-public class StageManager : MonoBehaviour
+public class StageManager : Singleton<StageManager>
 {
     [System.Serializable]
     public struct MonsterSpawnData
@@ -30,19 +30,9 @@ public class StageManager : MonoBehaviour
     private int _currentRoundCount = 0;
     private int _currentStageCount = 0;
 
-    public static StageManager Instance { get; private set; }
-
-    private void Awake()
+    protected override void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        base.Awake();
 
         _currentRoundCount++;
         _currentStageCount++;

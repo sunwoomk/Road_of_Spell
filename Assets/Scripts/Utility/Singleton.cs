@@ -1,19 +1,18 @@
 using UnityEngine;
 
-public class Singleton<T> where T : new()
+public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
-    static private T _instance;
+    public static T Instance { get; private set; }
 
-    static public T Instance
+    protected virtual void Awake()
     {
-        get
+        if (Instance == null)
         {
-            if (_instance == null)
-            {
-                _instance = new T();
-            }
-
-            return _instance;
+            Instance = this as T;
+        }
+        else
+        {
+            Destroy(gameObject);
         }
     }
 }

@@ -10,7 +10,9 @@ public class ReadySceneManager : Singleton<ReadySceneManager>
 {
     private string _playerName;
 
-    private List<string> _skillNames = new List<string>();
+    //private List<string> _skillNames = new List<string>();
+    private string _classSkillName;
+    private string _commonSkillName;
     private List<string> _playerNames = new List<string>();
 
     private Dictionary<string, Sprite> _playerPortraits = new Dictionary<string, Sprite>();
@@ -20,6 +22,8 @@ public class ReadySceneManager : Singleton<ReadySceneManager>
     private Button _startButton;
     private Image _playerPortrait;
 
+    private SkillSetUpPanel _skillSetUpPanel;
+
     public string PlayerName 
     {
         get { return _playerName; } 
@@ -28,19 +32,11 @@ public class ReadySceneManager : Singleton<ReadySceneManager>
 
     private void Start()
     {
-        //임시 테스트용
-        _skillNames.Clear();
-        _skillNames.Add("ElectricExplosion");
-
         _playerPortrait = GameObject.Find("PlayerPortrait").GetComponent<Image>();
+        _skillSetUpPanel = GameObject.Find("SkillSetUpPanel").GetComponent<SkillSetUpPanel>();
         SetButtons();
         LoadPlayerNames();
         SetPortrait(_playerName);
-    }
-
-    public void AddSkill(string skillName)
-    {
-        _skillNames.Add(skillName);
     }
 
     private void SetButtons()
@@ -87,6 +83,14 @@ public class ReadySceneManager : Singleton<ReadySceneManager>
         {
             _playerPortrait.sprite = sprite;
         }
+        string element = GameDataManager.Instance.PlayerElementPairs[playerName];
+        string path = "Spells/" + element + "/";
+
+        Spell[] spells = Resources.LoadAll<Spell>(path);
+        // tier == 1인 Spell 찾기
+        Spell tierOneSpell = spells.FirstOrDefault(s => s.tier == 1);
+        _classSkillName = tierOneSpell.name;
+        _skillSetUpPanel.SetClassSkillImage(element, _classSkillName);
     }
 
     private void NextPlayerPortrait()
@@ -107,7 +111,25 @@ public class ReadySceneManager : Singleton<ReadySceneManager>
     private void StartInGame()
     {
         GameDataManager.Instance.PlayerName = _playerName;
-        GameDataManager.Instance.SkillNames = _skillNames;
+        GameDataManager.Instance.ClassSkillName = _classSkillName;
+        GameDataManager.Instance.CommonSkillName = _commonSkillName;
         SceneManager.LoadScene("InGameScene");
     }
+
+    //private string GetSkillNameFromPlayerName(string playerName)
+    //{
+    //    switch (playerName)
+    //    {
+    //        case "BloodMage":
+    //            return "FirePit";
+    //        case "Druid":
+    //            return "VoidBlackHole";
+    //        case "MagicRogue":
+    //            return "ElectricExplosion";
+    //        case "Viking":
+    //            return "HolyCross";
+    //        default:
+    //            return "Error";
+    //    }
+    //}
 }

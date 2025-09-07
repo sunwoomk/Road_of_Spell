@@ -24,7 +24,8 @@ public class InGameManager : Singleton<InGameManager>
     private void Start()
     {
         _playerName = GameDataManager.Instance.PlayerName;
-        _playerSkills = GameDataManager.Instance.SkillNames;
+        _playerSkills.Add(GameDataManager.Instance.ClassSkillName);
+        //_playerSkills.Add(GameDataManager.Instance.CommonSkillName);
 
         _canvas = GameObject.Find("Canvas");
         _skillRangePanel = GameObject.Find("SkillRangePanel");

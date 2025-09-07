@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using static UnityEditor.PlayerSettings;
+using System.Linq;
 
 public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
@@ -101,7 +102,8 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
         _uiCanvas = GameObject.Find("Canvas").GetComponent<Canvas>();
 
         _spellName = skillName;
-        _spell = Resources.Load<Spell>("Spells/Electric/" + _spellName);
+        string element = GameDataManager.Instance.AllSkillElements.FirstOrDefault(e => skillName.StartsWith(e));
+        _spell = Resources.Load<Spell>("Spells/" + element + "/" + _spellName);
         LoadSpellData(_spell);
     }
 

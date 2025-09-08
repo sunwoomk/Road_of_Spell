@@ -104,21 +104,4 @@ public class ReadySceneManager : Singleton<ReadySceneManager>
         GameDataManager.Instance.PlayerName = _playerName;
         SceneManager.LoadScene("InGameScene");
     }
-
-    //private string GetSkillNameFromPlayerName(string playerName)
-    //{
-    //    switch (playerName)
-    //    {
-    //        case "BloodMage":
-    //            return "FirePit";
-    //        case "Druid":
-    //            return "VoidBlackHole";
-    //        case "MagicRogue":
-    //            return "ElectricExplosion";
-    //        case "Viking":
-    //            return "HolyCross";
-    //        default:
-    //            return "Error";
-    //    }
-    //}
 }

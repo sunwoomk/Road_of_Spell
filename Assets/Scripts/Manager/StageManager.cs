@@ -89,26 +89,6 @@ public class StageManager : Singleton<StageManager>
         }
     }
 
-
-    //private void TestJsonFileSave()
-    //{
-    //    _testStage = new Stage();
-    //    _testStage.roundCount = 2;
-    //    _testStage.monsterSpawns = new List<MonsterSpawnData>
-    //    {
-    //        new MonsterSpawnData { x = 0, y = 1 , key = 1},
-    //        new MonsterSpawnData { x = 0, y = 3 , key = 2},
-    //        new MonsterSpawnData { x = 1, y = 2 , key = 1},
-    //        new MonsterSpawnData { x = 1, y = 4 , key = 3}
-    //    };
-
-    //    string json = JsonUtility.ToJson(_testStage, true);
-
-    //    File.WriteAllText(Application.dataPath + "/Resources/Stages/TestStage.json", json);
-
-    //    Debug.Log("Stage data saved successfully.");
-    //}
-
     private void LoadStageJson()
     {
         string filePath = Application.dataPath + "/Resources/Stages/Stage" + _currentStageCount + ".json";

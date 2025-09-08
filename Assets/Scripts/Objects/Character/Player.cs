@@ -21,6 +21,8 @@ public class Player : MonoBehaviour
 
     private Animator _animator;
 
+    private ExpBar _expBar;
+
     public float Power
     {
         get { return _power; }
@@ -28,9 +30,9 @@ public class Player : MonoBehaviour
 
     public int CurMana { get { return _curMana; } }
     public int MaxMana { get { return _maxMana; } }
-    public int CurExp { get { return _curExp; } }
-    public int MaxExp { get { return _maxExp; } }
-    public int Level {  get { return _level; } }
+    public float CurExp { get { return _curExp; } }
+    public float MaxExp { get { return _maxExp; } }
+    public int Level { get { return _level; } }
 
     private void Start()
     {
@@ -51,6 +53,11 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void SetExpBar(ExpBar expBar)
+    {
+        _expBar = expBar;
+    }
+
     public void UseMana(int amount)
     {
         if (amount <= _curMana)
@@ -66,8 +73,10 @@ public class Player : MonoBehaviour
 
     public void AddExp(int exp)
     {
-        _curExp += exp;
-        while (_curExp >= _maxExp)
+        _curExp += exp * 10;
+        _expBar.StartMoveExpBar();
+
+        while (_curExp < _maxExp)
         {
             LevelUp();
         }
@@ -76,10 +85,6 @@ public class Player : MonoBehaviour
     public void UseSkillLevelUpPoint()
     {
         _skillLevelUpPoint--;
-        //if(_skillLevelUpPoint <= 0)
-        //{
-        //    InGameManager.Instance.SetActiveSkillLevelUpButtons(false);
-        //}
     }
 
     public void CastSpellAnimation()
@@ -87,7 +92,7 @@ public class Player : MonoBehaviour
         _animator.SetTrigger("CastSpell");
     }
 
-    private void LevelUp()
+    public void LevelUp()
     {
         _curExp -= _maxExp;
         if (_level >= _maxLevel)
@@ -99,7 +104,6 @@ public class Player : MonoBehaviour
         _maxMana += 1;
         _maxExp = _maxExpList[_level - 1];
         _skillLevelUpPoint += 1;
-        Debug.Log("LevelUp! 현재 레벨 : " +  _level);
-        //InGameManager.Instance.SetActiveSkillLevelUpButtons(true);
+        Debug.Log("LevelUp! 현재 레벨 : " + _level);
     }
 }

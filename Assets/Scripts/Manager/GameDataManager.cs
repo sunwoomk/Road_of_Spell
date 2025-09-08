@@ -6,18 +6,20 @@ public class GameDataManager : MonoBehaviour
     public static GameDataManager Instance { get; private set; }
 
     public string PlayerName;
-    public string ClassSkillName;
-    public string CommonSkillName;
+    public List<string> SkillNames = new List<string>();
 
-    public Dictionary<string, string> PlayerElementPairs = new Dictionary<string, string>
+    public Dictionary<string, List<string>> PlayerElementPairs = new Dictionary<string, List<string>>
     {
-            { "BloodMage", "Fire" },
-            { "Druid", "Void" },
-            { "MagicRogue", "Electric" },
-            { "Viking", "Holy" }
+            { "BloodMage", new List<string>{"Fire", "Water"} },
+            { "Druid", new List<string>{"Slash", "Technology" } },
+            { "MagicRogue", new List<string>{"Void", "Electric"} },
+            { "Viking", new List<string>{"Holy", "Ice"} }
     };
-    public List<string> CommonSkillElements = new List<string> { "Technology" };
-    public List<string> AllSkillElements = new List<string> { "Fire", "Void", "Electric", "Holy", "Technology" };
+
+    public List<string> AllSkillElements = new List<string>
+    {
+        "Fire", "Water", "Slash", "Technology", "Void", "Electric", "Holy", "Ice"
+    };
 
     private void Awake()
     {

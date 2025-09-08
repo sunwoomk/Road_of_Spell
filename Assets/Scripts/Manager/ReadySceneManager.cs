@@ -10,9 +10,6 @@ public class ReadySceneManager : Singleton<ReadySceneManager>
 {
     private string _playerName;
 
-    //private List<string> _skillNames = new List<string>();
-    private string _classSkillName;
-    private string _commonSkillName;
     private List<string> _playerNames = new List<string>();
 
     private Dictionary<string, Sprite> _playerPortraits = new Dictionary<string, Sprite>();
@@ -83,14 +80,8 @@ public class ReadySceneManager : Singleton<ReadySceneManager>
         {
             _playerPortrait.sprite = sprite;
         }
-        string element = GameDataManager.Instance.PlayerElementPairs[playerName];
-        string path = "Spells/" + element + "/";
 
-        Spell[] spells = Resources.LoadAll<Spell>(path);
-        // tier == 1ÀÎ Spell Ã£±â
-        Spell tierOneSpell = spells.FirstOrDefault(s => s.tier == 1);
-        _classSkillName = tierOneSpell.name;
-        _skillSetUpPanel.SetClassSkillImage(element, _classSkillName);
+        _skillSetUpPanel.SetClassSkillImage(playerName);
     }
 
     private void NextPlayerPortrait()
@@ -111,8 +102,6 @@ public class ReadySceneManager : Singleton<ReadySceneManager>
     private void StartInGame()
     {
         GameDataManager.Instance.PlayerName = _playerName;
-        GameDataManager.Instance.ClassSkillName = _classSkillName;
-        GameDataManager.Instance.CommonSkillName = _commonSkillName;
         SceneManager.LoadScene("InGameScene");
     }
 

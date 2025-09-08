@@ -103,7 +103,7 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
 
         _spellName = skillName;
         string element = GameDataManager.Instance.AllSkillElements.FirstOrDefault(e => skillName.StartsWith(e));
-        _spell = Resources.Load<Spell>("Spells/" + element + "/" + _spellName);
+        _spell = Resources.Load<Spell>("Spells/"+ GameDataManager.Instance.PlayerName + "/" + element + "/" + _spellName);
         LoadSpellData(_spell);
     }
 

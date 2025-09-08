@@ -36,12 +36,15 @@ public class ExpBar : MonoBehaviour
             yield return AnimateLerp(startValue, 1f);
             startValue = 0f;
             _slider.value = 0f;
+
+            //매번 레벨 텍스트 업데이트
+            UpdateLevelText();
         }
 
         //레벨업을 마친 후에 목표 value를 잡고 마지막 선형보간 이동
         float targetValue = _player.CurExp / _player.MaxExp;
         yield return AnimateLerp(startValue, targetValue);
-        _levelText.text = _player.Level.ToString();
+        UpdateLevelText();
     }
 
     private IEnumerator AnimateLerp(float from, float to)
@@ -62,6 +65,12 @@ public class ExpBar : MonoBehaviour
     {
         _player = player;
         _player.SetExpBar(this);
+        UpdateLevelText();
+    }
+
+    public void UpdateLevelText()
+    {
+        _levelText.text = _player.Level.ToString();
     }
 }
 

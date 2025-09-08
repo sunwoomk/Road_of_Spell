@@ -3,11 +3,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System.IO;
+using TMPro;
 
 public class SkillSetUpPanel : MonoBehaviour
 {
     private GameObject _skillImagePrefab;
     private List<Image> _skillImages = new List<Image>();
+    private List<TextMeshProUGUI> _skillNameTexts = new List<TextMeshProUGUI>();
 
     private void Start()
     {
@@ -23,6 +25,9 @@ public class SkillSetUpPanel : MonoBehaviour
             RectTransform rectTransform = skillImage.GetComponent<RectTransform>();
             rectTransform.anchoredPosition = new Vector2(0, 100 - i * 300);
             _skillImages.Add(skillImage.GetComponent<Image>());
+
+            TextMeshProUGUI skillNameText = skillImage.transform.Find("SkillNameText").GetComponent<TextMeshProUGUI>();
+            _skillNameTexts.Add(skillNameText);
         }
     }
 
@@ -49,6 +54,8 @@ public class SkillSetUpPanel : MonoBehaviour
             //스킬 아이콘 설정
             string iconPath = "Textures/SkillIcon/" + element + "/" + skillName;
             _skillImages[i].sprite = Resources.Load<Sprite>(iconPath);
+
+            _skillNameTexts[i].text = skillName;
         }
     }
 }

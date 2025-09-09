@@ -6,7 +6,9 @@ public class GameDataManager : MonoBehaviour
     private string _playerName;
     private List<string> _skillNames = new List<string>();
 
-    private Dictionary<string, List<string>> _playerElementPairs = new Dictionary<string, List<string>>
+    //후에 직업이 추가되면 새로 넣어주기
+    private Dictionary<string, List<string>> _playerElementPairs 
+        = new Dictionary<string, List<string>>
     {
             { "BloodMage", new List<string>{"Fire", "Water"} },
             { "Druid", new List<string>{"Slash", "Technology" } },

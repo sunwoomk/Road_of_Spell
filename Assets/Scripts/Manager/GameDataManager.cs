@@ -3,12 +3,10 @@ using UnityEngine;
 
 public class GameDataManager : MonoBehaviour
 {
-    public static GameDataManager Instance { get; private set; }
+    private string _playerName;
+    private List<string> _skillNames = new List<string>();
 
-    public string PlayerName;
-    public List<string> SkillNames = new List<string>();
-
-    public Dictionary<string, List<string>> PlayerElementPairs = new Dictionary<string, List<string>>
+    private Dictionary<string, List<string>> _playerElementPairs = new Dictionary<string, List<string>>
     {
             { "BloodMage", new List<string>{"Fire", "Water"} },
             { "Druid", new List<string>{"Slash", "Technology" } },
@@ -16,10 +14,23 @@ public class GameDataManager : MonoBehaviour
             { "Viking", new List<string>{"Holy", "Ice"} }
     };
 
-    public List<string> AllSkillElements = new List<string>
+    private List<string> _allSkillElements = new List<string>
     {
         "Fire", "Water", "Slash", "Technology", "Void", "Electric", "Holy", "Ice"
     };
+
+    public string PlayerName 
+    { 
+        get { return _playerName; } 
+        set { _playerName = value; }
+    }
+    public List<string> SkillNames { get { return _skillNames; } }
+
+    public Dictionary<string, List<string>> PlayerElementPairs {  get { return _playerElementPairs; } }
+
+    public List<string> AllSkillElements {  get { return _allSkillElements; } }
+
+    public static GameDataManager Instance { get; private set; }
 
     private void Awake()
     {

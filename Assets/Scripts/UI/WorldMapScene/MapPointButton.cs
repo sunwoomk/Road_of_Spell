@@ -13,7 +13,6 @@ public class MapPointButton : MonoBehaviour
     private GameObject _areaTextBackground;
     private TextMeshProUGUI _areaText;
 
-    [SerializeField]
     private string _areaName;
 
     private void Awake()
@@ -26,13 +25,31 @@ public class MapPointButton : MonoBehaviour
         _previewImage = _previewImageObject.GetComponent<Image>();
         _previewImage.sprite = Resources.Load<Sprite>("Textures/PreviewImages/" + _areaName);
 
+        _areaTextBackground = transform.Find("AreaTextBackground").gameObject;
+        _areaTextBackground.SetActive(false);
+        _areaText = _areaTextBackground.transform.Find("AreaText").GetComponent<TextMeshProUGUI>();
+        _areaText.text = _areaName;
+
         _mapPointButton = GetComponent<Button>();
-        _mapPointButton.onClick.AddListener(OnButtonClick);
+        _mapPointButton.onClick.AddListener(OpenUI);
     }
 
-    private void OnButtonClick()
+    public void OpenUI()
     {
         _selectionOverlay.SetActive(true);
         _previewImageObject.SetActive(true);
+        _areaTextBackground.SetActive(true);
+    }
+
+    public void CloseUI()
+    {
+        _selectionOverlay.SetActive(false);
+        _previewImageObject.SetActive(false);
+        _areaTextBackground.SetActive(false);
+    }
+
+    public void SetAreaName(string areaName)
+    {
+        _areaName = areaName;
     }
 }

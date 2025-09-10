@@ -28,14 +28,14 @@ public class StageManager : Singleton<StageManager>
     private Canvas _canvas;
 
     private int _currentRoundCount = 0;
-    private int _currentStageCount = 0;
+    //private int _currentStageCount = 0;
 
     protected override void Awake()
     {
         base.Awake();
 
         _currentRoundCount++;
-        _currentStageCount++;
+        //_currentStageCount++;
 
         LoadStageJson();
     }
@@ -91,7 +91,8 @@ public class StageManager : Singleton<StageManager>
 
     private void LoadStageJson()
     {
-        string filePath = Application.dataPath + "/Resources/Stages/Stage" + _currentStageCount + ".json";
+        //string filePath = Application.dataPath + "/Resources/Stages/Stage" + _currentStageCount + ".json";
+        string filePath = Application.dataPath + "/Resources/Stages/" + GameDataManager.Instance.StageName + ".json";
 
         if (File.Exists(filePath))
         {

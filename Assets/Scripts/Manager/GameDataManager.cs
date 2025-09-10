@@ -4,6 +4,7 @@ using UnityEngine;
 public class GameDataManager : MonoBehaviour
 {
     private string _playerName;
+    private string _stageName;
     private List<string> _skillNames = new List<string>();
 
     //후에 직업이 추가되면 새로 넣어주기
@@ -25,6 +26,12 @@ public class GameDataManager : MonoBehaviour
     { 
         get { return _playerName; } 
         set { _playerName = value; }
+    }
+
+    public string StageName
+    {
+        get { return _stageName; }
+        set { _stageName = value; }
     }
     public List<string> SkillNames { get { return _skillNames; } }
 

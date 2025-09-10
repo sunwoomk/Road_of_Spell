@@ -1,22 +1,51 @@
 using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class MapPointController : MonoBehaviour
 {
     private const int _areaCount = 6;
 
-    private Vector3[] _mapPointPositions = new Vector3[6];
-    private string[] _areaNames = new string[6];
+    private struct AreaData
+    {
+        public Vector3 position;
+        public string areaName;
+        public string areaType;
+        public AreaData(Vector3 pos, string name, string type)
+        {
+            position = pos;
+            areaName = name;
+            areaType = type;
+        }
+    }
 
-    private List<MapPointButton> _mapPointButtons = new List<MapPointButton>();
+    //후에 스테이지 및 다른 씬 늘어나면 여기에 추가
+    private AreaData[] _areaDatas = new AreaData[6]
+    {
+        new AreaData(new Vector3(714, 353, 0), "EldaraDesert", "Dungeon"),
+        new AreaData(new Vector3(-476, -32, 0), "NobrickTown", "Town"),
+        new AreaData(new Vector3(-1265, 235, 0), "SilmardinSwamp", "Dungeon"),
+        new AreaData(new Vector3(1187, -143, 0), "SilvaronHills", "Dungeon"),
+        new AreaData(new Vector3(957, -481, 0), "TaberonPeaks", "Dungeon"),
+        new AreaData(new Vector3(243, -329, 0), "TariasForest", "Dungeon")
+    };
+
+    private List<GameObject> _mapPointButtons = new List<GameObject>();
 
     private GameObject _mapPointButtonPrefab;
     private Transform _mapPointButtonsParent;
 
+    private GameObject _backgroundCloseArea;
+    private ContinueButton _continueButton;
+
     private void Start()
     {
-        _mapPointButtonsParent = GameObject.Find("Canvas").transform.Find("MapPointButtons").transform;
+        Transform canvas = GameObject.Find("Canvas").transform;
+        _mapPointButtonsParent = canvas.Find("MapPointButtons").transform;
+        _backgroundCloseArea = canvas.Find("BackgroundCloseArea").gameObject;
+        _backgroundCloseArea.GetComponent<Button>().onClick.AddListener(CloseAllButtonsUI);
+        _continueButton = canvas.Find("ContinueButton").gameObject.GetComponent<ContinueButton>();
         SetMapPointButtons();
     }
 
@@ -27,10 +56,40 @@ public class MapPointController : MonoBehaviour
         _mapPointButtonPrefab = Resources.Load<GameObject>("Prefabs/UI/MapPointButton");
         for(int i = 0;  i < _areaCount; i++)
         {
-            GameObject mapPointButtonObject = Instantiate(_mapPointButtonPrefab, _mapPointPositions[i], Quaternion.identity, _mapPointButtonsParent);
+            AreaData areaData = _areaDatas[i];
+            GameObject mapPointButtonObject = Instantiate(_mapPointButtonPrefab, _mapPointButtonsParent);
+            mapPointButtonObject.transform.localPosition = areaData.position;
             MapPointButton mapPointButton = mapPointButtonObject.GetComponent<MapPointButton>();
-            mapPointButton.SetAreaName(_areaNames[i]);
-            _mapPointButtons.Add(mapPointButton);
+            mapPointButtonObject.GetComponent<Button>().onClick.AddListener
+                (() => OnClickEventMapButton(mapPointButton, areaData.areaName, areaData.areaType));
+            mapPointButton.Init(this, areaData.areaName);
+            _mapPointButtons.Add(mapPointButtonObject);
+        }
+    }
+
+    //각 버튼에 이벤트 등록
+    private void OnClickEventMapButton(MapPointButton mapPointButton, string areaName, string areaType)
+    {
+        mapPointButton.OpenUI();
+        _continueButton.SetAreaData(areaName, areaType);
+    }
+
+    //버튼의 하위 UI들 비활성화
+    private void CloseAllButtonsUI()
+    {
+        foreach (GameObject mapPointButton in _mapPointButtons)
+        {
+            mapPointButton.GetComponent<MapPointButton>().CloseUI();
+            mapPointButton.SetActive(true);
+        }
+    }
+
+    //모든 버튼 비활성화
+    public void CloseAllButtons()
+    {
+        foreach (GameObject mapPointButton in _mapPointButtons)
+        {
+            mapPointButton.SetActive(false);
         }
     }
 }

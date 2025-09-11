@@ -31,7 +31,20 @@ public class InGameManager : Singleton<InGameManager>
         _skillRangePanel = GameObject.Find("SkillRangePanel");
         SetPlayer(_playerName);
         SetSkillPanel(_playerSkills);
+        //StageManager.Instance.SpawnMonsters();
+        #if UNITY_ANDROID
+            StageManager.Instance.OnStageDataLoaded += OnStageDataLoaded;
+        #else
+            // PC 환경에서는 LoadStageJson() 동기 호출하므로 바로 진행 가능
+            StageManager.Instance.SpawnMonsters();
+        #endif
+    }
+
+    private void OnStageDataLoaded()
+    {
         StageManager.Instance.SpawnMonsters();
+        // 필요시 이벤트 구독 해제
+        StageManager.Instance.OnStageDataLoaded -= OnStageDataLoaded;
     }
 
     //나중에 ReadyScene에서 호출할 예정

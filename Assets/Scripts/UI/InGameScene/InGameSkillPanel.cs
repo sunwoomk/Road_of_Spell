@@ -5,10 +5,10 @@ using UnityEngine.UI;
 
 public class InGameSkillPanel : MonoBehaviour
 {
-    private const float SkillButtonSize = 200f;
-    private const float StartSkillButtonPosX = -900f;
-    private const float SkillSelectButtonSpacing = 250f;
-    private const float SkillSelectButtonHeight = 140f;
+    private const float SkillButtonSize = 160f;
+    private const float StartSkillButtonPosX = -570f;
+    private const float SkillSelectButtonSpacing = 160f;
+    private const float SkillSelectButtonHeight = 94f;
     private const int MaxSkillSelectButtons = 2;
 
     private List<string> _playerSkills = new List<string>();

@@ -23,12 +23,12 @@ public class MapPointController : MonoBehaviour
     //후에 스테이지 및 다른 씬 늘어나면 여기에 추가
     private AreaData[] _areaDatas = new AreaData[6]
     {
-        new AreaData(new Vector3(714, 353, 0), "EldaraDesert", "Dungeon"),
-        new AreaData(new Vector3(-476, -32, 0), "NobrickTown", "Town"),
-        new AreaData(new Vector3(-1265, 235, 0), "SilmardinSwamp", "Dungeon"),
-        new AreaData(new Vector3(1187, -143, 0), "SilvaronHills", "Dungeon"),
-        new AreaData(new Vector3(957, -481, 0), "TaberonPeaks", "Dungeon"),
-        new AreaData(new Vector3(243, -329, 0), "TariasForest", "Dungeon")
+        new AreaData(new Vector3(777, 350, 0), "EldaraDesert", "Dungeon"),
+        new AreaData(new Vector3(-295, -32, 0), "NobrickTown", "Town"),
+        new AreaData(new Vector3(-800, 166, 0), "SilmardinSwamp", "Dungeon"),
+        new AreaData(new Vector3(747, -87, 0), "SilvaronHills", "Dungeon"),
+        new AreaData(new Vector3(614, -335, 0), "TaberonPeaks", "Dungeon"),
+        new AreaData(new Vector3(120, -366, 0), "TariasForest", "Dungeon")
     };
 
     private List<GameObject> _mapPointButtons = new List<GameObject>();

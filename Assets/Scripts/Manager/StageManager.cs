@@ -4,6 +4,8 @@ using System.IO;
 using Unity.VisualScripting;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
+using UnityEngine.Networking;
 
 public class StageManager : Singleton<StageManager>
 {
@@ -30,14 +32,23 @@ public class StageManager : Singleton<StageManager>
     private int _currentRoundCount = 0;
     //private int _currentStageCount = 0;
 
+    public delegate void StageDataLoadedHandler();
+    public event StageDataLoadedHandler OnStageDataLoaded;
+
     protected override void Awake()
     {
         base.Awake();
-
         _currentRoundCount++;
-        //_currentStageCount++;
 
+        //LoadStageJson();
+        //StartCoroutine(LoadStageJsonFromMobile());
+    #if UNITY_EDITOR || UNITY_STANDALONE
         LoadStageJson();
+    #elif UNITY_ANDROID
+        StartCoroutine(LoadStageJsonFromMobile());
+    #else
+        Debug.LogWarning("Unsupported platform for loading stage JSON.");
+    #endif
     }
 
     private void Start()
@@ -103,6 +114,27 @@ public class StageManager : Singleton<StageManager>
         else
         {
             Debug.LogWarning("Stage JSON file not found at path: " + filePath);
+        }
+    }
+
+    private IEnumerator LoadStageJsonFromMobile()
+    {
+        string fileName = GameDataManager.Instance.StageName + ".json";
+        string filePath = System.IO.Path.Combine(Application.streamingAssetsPath, fileName);
+
+        UnityWebRequest www = UnityWebRequest.Get(filePath);
+        yield return www.SendWebRequest();
+
+        if (www.result == UnityWebRequest.Result.Success)
+        {
+            string json = www.downloadHandler.text;
+            _currentStage = JsonUtility.FromJson<Stage>(json);
+            Debug.Log("Stage data loaded successfully from StreamingAssets on mobile.");
+            OnStageDataLoaded?.Invoke();
+        }
+        else
+        {
+            Debug.LogWarning("Failed to load Stage JSON from StreamingAssets: " + www.error);
         }
     }
 }

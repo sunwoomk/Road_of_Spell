@@ -135,5 +135,6 @@ public class StagePreview : MonoBehaviour
         string json = JsonUtility.ToJson(stage, true);
 
         File.WriteAllText(Application.dataPath + "/Resources/Stages/" + text + ".json", json);
+        File.WriteAllText(Application.dataPath + "/StreamingAssets/" + text + ".json", json);
     }
 }

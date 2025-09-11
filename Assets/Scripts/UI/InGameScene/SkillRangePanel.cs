@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class SkillRangePanel : MonoBehaviour
 {
-    private const float TileSize = 55;
+    private const float TileSize = 38;
 
     private GameObject _normalTile;
     private GameObject _highlightTile;

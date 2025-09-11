@@ -5,8 +5,8 @@ using TMPro;
 
 public class ManaPanel : MonoBehaviour
 {
-    private const float StartPosX = -100f;
-    private const float ManaCrystalWidth = 38f;
+    private const float StartPosX = -67f;
+    private const float ManaCrystalWidth = 26f;
     private const int MaxManaCrystal = 10;
 
     private GameObject _deactiveManaCrystalPrefab;

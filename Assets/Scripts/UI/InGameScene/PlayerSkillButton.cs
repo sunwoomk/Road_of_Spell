@@ -73,7 +73,7 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
         }
     }
 
-    public void OnPointerUp(PointerEventData eventData) //손을 땠을 때
+    public void OnPointerUp(PointerEventData eventData) // 손을 땠을 때
     {
         _levelIcon.SetActive(false);
         _costIcon.SetActive(false);
@@ -81,14 +81,24 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
 
         if (_isDragging)
         {
+            // 무조건 false로 상태 변경
             _isDragging = false;
-            CastSpell();
             TileManager.Instance.SetSkillPreviewActive(false);
+
+            // CheckMouseOnTile 호출해 bool 확인
+            (_, bool isOnTile) = CheckMouseOnTile(eventData);
+
+            if (isOnTile)
+            {
+                CastSpell();
+                _player.UseMana(_cost);
+                StartCoroutine(DelayedFadeOut(EffectDuration));
+            }
+            else
+            {
+                StartCoroutine(DelayedFadeOut(0.1f));
+            }
         }
-
-        StartCoroutine(DelayedFadeOut(EffectDuration));
-
-        _player.UseMana(_cost);
     }
 
     public void Init(string skillName, Player player)
@@ -191,6 +201,22 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
 
     private void UpdateSpellTilePosition(PointerEventData eventData)
     {
+        // 튜플로 반환받기
+        (Tile tileComp, bool isOnTile) = CheckMouseOnTile(eventData);
+
+        if (isOnTile)
+        {
+            // tileComp에서 좌표 가져오기
+            Vector2Int tilePos = tileComp.TilePos;
+            TileManager.Instance.UpdateCurSpellTilePos(tilePos, _baseRangeOffsets);
+            _center = tilePos;
+        }
+    }
+
+    private (Tile, bool) CheckMouseOnTile(PointerEventData eventData)
+    {
+        Tile tileComp = new Tile();
+
         // 화면 좌표를 월드 좌표로 변환
         Vector3 worldPos = Camera.main.ScreenToWorldPoint(eventData.position);
         Vector2 worldPos2D = new Vector2(worldPos.x, worldPos.y);
@@ -201,15 +227,14 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
         //만약 콜라이더의 태그가 "Tile" 일 때 
         if (hitCollider != null && hitCollider.CompareTag("Tile"))
         {
-            Tile tileComp = hitCollider.GetComponent<Tile>();
+            tileComp = hitCollider.GetComponent<Tile>();
             if (tileComp != null)
             {
-                //스펠을 시전할 중심 좌표를 현재 Ray가 가리키는 타일의 좌표로 변경
-                Vector2Int tilePos = tileComp.TilePos;
-                TileManager.Instance.UpdateCurSpellTilePos(tilePos, _baseRangeOffsets);
-                _center = tilePos;
+                return (tileComp, true);
             }
         }
+
+        return (tileComp, false);
     }
 
     private void CastSpell()

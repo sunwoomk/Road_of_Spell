@@ -25,7 +25,6 @@ public class InGameManager : Singleton<InGameManager>
     {
         _playerName = GameDataManager.Instance.PlayerName;
         _playerSkills = GameDataManager.Instance.SkillNames;
-        //_playerSkills.Add(GameDataManager.Instance.CommonSkillName);
 
         _canvas = GameObject.Find("Canvas");
         _skillRangePanel = GameObject.Find("SkillRangePanel");
@@ -43,7 +42,6 @@ public class InGameManager : Singleton<InGameManager>
     private void OnStageDataLoaded()
     {
         StageManager.Instance.SpawnMonsters();
-        // 필요시 이벤트 구독 해제
         StageManager.Instance.OnStageDataLoaded -= OnStageDataLoaded;
     }
 

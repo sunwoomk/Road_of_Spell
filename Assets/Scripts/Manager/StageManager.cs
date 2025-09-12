@@ -40,8 +40,6 @@ public class StageManager : Singleton<StageManager>
         base.Awake();
         _currentRoundCount++;
 
-        //LoadStageJson();
-        //StartCoroutine(LoadStageJsonFromMobile());
     #if UNITY_EDITOR || UNITY_STANDALONE
         LoadStageJson();
     #elif UNITY_ANDROID
@@ -117,24 +115,23 @@ public class StageManager : Singleton<StageManager>
         }
     }
 
+    // 모바일 환경에서 StreamingAssets의 스테이지 JSON 파일을 비동기 로드하여 파싱하는 코루틴
     private IEnumerator LoadStageJsonFromMobile()
     {
+        // 스테이지 이름 기반 JSON 파일 경로 생성
         string fileName = GameDataManager.Instance.StageName + ".json";
         string filePath = System.IO.Path.Combine(Application.streamingAssetsPath, fileName);
 
+        // UnityWebRequest로 파일 요청 및 완료 대기
         UnityWebRequest www = UnityWebRequest.Get(filePath);
         yield return www.SendWebRequest();
 
         if (www.result == UnityWebRequest.Result.Success)
         {
+            // JSON 파싱 후 스테이지 데이터 저장 및 이벤트 호출
             string json = www.downloadHandler.text;
             _currentStage = JsonUtility.FromJson<Stage>(json);
-            Debug.Log("Stage data loaded successfully from StreamingAssets on mobile.");
             OnStageDataLoaded?.Invoke();
-        }
-        else
-        {
-            Debug.LogWarning("Failed to load Stage JSON from StreamingAssets: " + www.error);
         }
     }
 }

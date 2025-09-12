@@ -85,19 +85,23 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
             _isDragging = false;
             TileManager.Instance.SetSkillPreviewActive(false);
 
-            // CheckMouseOnTile 호출해 bool 확인
-            (_, bool isOnTile) = CheckMouseOnTile(eventData);
+            CastSpell();
+            _player.UseMana(_cost);
+            StartCoroutine(DelayedFadeOut(EffectDuration));
 
-            if (isOnTile)
-            {
-                CastSpell();
-                _player.UseMana(_cost);
-                StartCoroutine(DelayedFadeOut(EffectDuration));
-            }
-            else
-            {
-                StartCoroutine(DelayedFadeOut(0.1f));
-            }
+            // CheckMouseOnTile 호출해 bool 확인
+            //(_, bool isOnTile) = CheckMouseOnTile(eventData);
+
+            //if (isOnTile)
+            //{
+            //    CastSpell();
+            //    _player.UseMana(_cost);
+            //    StartCoroutine(DelayedFadeOut(EffectDuration));
+            //}
+            //else
+            //{
+            //    StartCoroutine(DelayedFadeOut(0.1f));
+            //}
         }
     }
 
@@ -213,6 +217,7 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
         }
     }
 
+    //현재 마우스가 Tile위에 있는지 체크하는 함수
     private (Tile, bool) CheckMouseOnTile(PointerEventData eventData)
     {
         Tile tileComp = new Tile();

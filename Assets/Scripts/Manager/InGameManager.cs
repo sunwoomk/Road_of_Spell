@@ -10,6 +10,8 @@ public class InGameManager : Singleton<InGameManager>
 
     private GameObject _skillRangePanel;
 
+    private GameObject _inGameBackground;
+
     private string _playerName;
 
     private List<string> _playerSkills = new List<string>(); 
@@ -23,6 +25,9 @@ public class InGameManager : Singleton<InGameManager>
     //임시로 Start함수에서 호출
     private void Start()
     {
+        _inGameBackground = GameObject.Find("InGameBackground");
+        _inGameBackground.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Textures/AreaImages/" + GameDataManager.Instance.StageName);
+
         _playerName = GameDataManager.Instance.PlayerName;
         _playerSkills = GameDataManager.Instance.SkillNames;
 

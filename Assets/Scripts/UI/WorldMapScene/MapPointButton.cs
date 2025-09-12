@@ -27,7 +27,7 @@ public class MapPointButton : MonoBehaviour
         _previewImageObject = transform.Find("PreviewImage").gameObject;
         _previewImageObject.SetActive(false);
         _previewImage = _previewImageObject.GetComponent<Image>();
-        _previewImage.sprite = Resources.Load<Sprite>("Textures/PreviewImages/" + _areaName);
+        _previewImage.sprite = Resources.Load<Sprite>("Textures/AreaImages/" + _areaName);
         SetRectPos(_previewImageObject.GetComponent<RectTransform>());
 
         _areaTextBackground = transform.Find("AreaTextBackground").gameObject;

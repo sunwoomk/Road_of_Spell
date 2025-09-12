@@ -97,7 +97,7 @@ public class MonsterManager : Singleton<MonsterManager>
 
         // 몬스터 인스턴스 생성 및 초기화
         Vector2 canvasPos = TileManager.Instance.WorldToCanvasPosition(worldPos);
-        GameObject monsterInstance = Instantiate(monster, _uiCanvas.transform);
+        GameObject monsterInstance = Instantiate(monster, _uiCanvas.transform.Find("Monsters").transform);
         monsterInstance.GetComponent<RectTransform>().anchoredPosition = canvasPos;
 
         //해당 몬스터 스크립트에 데이터 전달 및 Dictionary에 추가

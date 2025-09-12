@@ -73,10 +73,15 @@ public class Player : MonoBehaviour
 
     public void AddExp(int exp)
     {
+        if (_level >= _maxLevel)
+        {
+            _curExp = 0;
+            return;
+        }
         _curExp += exp * 10;
         _expBar.StartMoveExpBar();
 
-        while (_curExp < _maxExp)
+        while (_curExp >= _maxExp && _level < _maxLevel)
         {
             LevelUp();
         }
@@ -94,12 +99,8 @@ public class Player : MonoBehaviour
 
     public void LevelUp()
     {
+        if (_level >= _maxLevel) return;
         _curExp -= _maxExp;
-        if (_level >= _maxLevel)
-        {
-            _curExp = 0;
-            return;
-        }
         _level += 1;
         _maxMana += 1;
         _maxExp = _maxExpList[_level - 1];

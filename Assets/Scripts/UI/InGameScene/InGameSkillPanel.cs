@@ -7,7 +7,7 @@ public class InGameSkillPanel : MonoBehaviour
 {
     private const float SkillButtonSize = 160f;
     private const float StartSkillButtonPosX = -570f;
-    private const float SkillSelectButtonSpacing = 160f;
+    private const float SkillSelectButtonSpacing = 240f;
     private const float SkillSelectButtonHeight = 94f;
     private const int MaxSkillSelectButtons = 2;
 

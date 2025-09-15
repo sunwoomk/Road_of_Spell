@@ -14,7 +14,7 @@ public class InGameManager : Singleton<InGameManager>
 
     private GameObject _inGameBackground;
 
-    private GameObject _gameClearPanel;
+    private GameObject _gameResultPanel;
 
     private string _playerName;
 
@@ -66,7 +66,7 @@ public class InGameManager : Singleton<InGameManager>
 
         SetPlayer(_playerName);
         SetSkillPanel(_playerSkills);
-        SetGameClearPanel();
+        SetGameResultPanel();
         //StageManager.Instance.SpawnMonsters();
         #if UNITY_ANDROID
             StageManager.Instance.OnStageDataLoaded += OnStageDataLoaded;
@@ -74,12 +74,13 @@ public class InGameManager : Singleton<InGameManager>
             // PC 환경에서는 LoadStageJson() 동기 호출하므로 바로 진행 가능
             StageManager.Instance.SpawnMonsters();
         #endif
+
+        MonsterCount = StageManager.Instance.CurrentStage.monsterSpawns.Count;
     }
 
     private void OnStageDataLoaded()
     {
         StageManager.Instance.SpawnMonsters();
-        MonsterCount = StageManager.Instance.CurrentStage.monsterSpawns.Count;
         StageManager.Instance.OnStageDataLoaded -= OnStageDataLoaded;
     }
 
@@ -93,6 +94,8 @@ public class InGameManager : Singleton<InGameManager>
         MonsterManager.Instance.SetPlayer(_player);
         GameObject.Find("ManaPanel").GetComponent<ManaPanel>().SetPlayer(_player);
         GameObject.Find("ExpBar").GetComponent<ExpBar>().SetPlayer(_player);
+        GameObject.Find("PlayerHpPanel").GetComponent<PlayerHpPanel>().SetPlayer(_player);
+        GameObject.Find("PlayerHpPanel").GetComponent<PlayerHpPanel>().SetPlayerHp();
     }
 
     //나중에 ReadyScene에서 호출할 예정
@@ -106,11 +109,11 @@ public class InGameManager : Singleton<InGameManager>
         inGameSkillPanelScript.CreateSkillSelectButton();
     }
 
-    private void SetGameClearPanel()
+    private void SetGameResultPanel()
     {
-        _gameClearPanel = _canvas.transform.Find("GameClearPanel").gameObject;
-        _gameClearPanel.SetActive(false);
-        Button worldMapButton = _gameClearPanel.transform.Find("WorldMapButton").gameObject.GetComponent<Button>();
+        _gameResultPanel = _canvas.transform.Find("GameResultPanel").gameObject;
+        _gameResultPanel.SetActive(false);
+        Button worldMapButton = _gameResultPanel.transform.Find("WorldMapButton").gameObject.GetComponent<Button>();
         worldMapButton.onClick.AddListener(LoadWorldMapScene);
     }
 
@@ -119,9 +122,19 @@ public class InGameManager : Singleton<InGameManager>
         SceneManager.LoadScene("WorldMapScene");
     }
 
-    public void SetGameClearPanelActive(bool isActive) 
+    public void SetGameResultPanelActiveTrue(string gameResult) 
     {
-        _gameClearPanel.SetActive(isActive);
+        _gameResultPanel.SetActive(true);
+        if(gameResult == "GameClear")
+        {
+            _gameResultPanel.transform.Find("GameClearTextImage").gameObject.SetActive(true);
+            _gameResultPanel.transform.Find("GameOverTextImage").gameObject.SetActive(false);
+        }
+        else if(gameResult == "GameOver")
+        {
+            _gameResultPanel.transform.Find("GameClearTextImage").gameObject.SetActive(false);
+            _gameResultPanel.transform.Find("GameOverTextImage").gameObject.SetActive(true);
+        }
     }
 
     public void AddSkillLevelUpButton(GameObject button)

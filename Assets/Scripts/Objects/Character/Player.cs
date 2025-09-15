@@ -11,13 +11,16 @@ public class Player : MonoBehaviour
 
     private int _maxLevel = 20;
 
-    [SerializeField] private float _power;
-    [SerializeField] private int _level = 1;
-    [SerializeField] private int _curExp;
-    [SerializeField] private int _maxExp;
+    private float _power;
+    private int _level = 1;
+    private int _curExp;
+    private int _maxExp;
+    private int _curHp;
+    private int _maxHp = 5;
+
     private int _curMana = 1;
     private int _maxMana = 1;
-    [SerializeField] private int _skillLevelUpPoint = 0;
+    private int _skillLevelUpPoint = 0;
 
     private Animator _animator;
 
@@ -32,12 +35,15 @@ public class Player : MonoBehaviour
     public int MaxMana { get { return _maxMana; } }
     public float CurExp { get { return _curExp; } }
     public float MaxExp { get { return _maxExp; } }
+    public float CurHp { get { return _curHp; } }
+    public float MaxHp { get { return _maxHp; } }
     public int Level { get { return _level; } }
 
     private void Start()
     {
         _animator = GetComponent<Animator>();
         _curMana = _maxMana;
+        _curHp = _maxHp;
         _maxExp = _maxExpList[0];
     }
 
@@ -85,6 +91,11 @@ public class Player : MonoBehaviour
         {
             LevelUp();
         }
+    }
+
+    public void TakeDamage(int power)
+    {
+        _curHp -= power;
     }
 
     public void UseSkillLevelUpPoint()

@@ -56,9 +56,9 @@ public class ManaPanel : MonoBehaviour
 
     private void CreateManaCrystal(GameObject manaCrystalPrefab, List<GameObject> manaCrystals, int index)
     {
-        GameObject deactiveManaCrystal = Instantiate(manaCrystalPrefab, transform);
-        RectTransform rectTransform = deactiveManaCrystal.GetComponent<RectTransform>();
+        GameObject manaCrystal = Instantiate(manaCrystalPrefab, transform);
+        RectTransform rectTransform = manaCrystal.GetComponent<RectTransform>();
         rectTransform.anchoredPosition = new Vector2(StartPosX + ManaCrystalWidth * index, 0);
-        manaCrystals.Add(deactiveManaCrystal);
+        manaCrystals.Add(manaCrystal);
     }
 }

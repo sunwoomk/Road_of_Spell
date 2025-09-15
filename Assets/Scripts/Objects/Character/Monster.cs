@@ -12,6 +12,7 @@ public class Monster : MonoBehaviour
     private float _maxHp;
     private float _currentHp;
     private float _defense;
+    private int _power;
     private int _speed;
     private int _dropExp;
     private Vector2Int _position;
@@ -40,6 +41,7 @@ public class Monster : MonoBehaviour
         _defense = monsterData.BaseDefense;
         _speed = monsterData.Speed;
         _dropExp = monsterData.DropExp;
+        _power = monsterData.Power;
     }
 
     public void SetPlayer(Player player)
@@ -64,6 +66,16 @@ public class Monster : MonoBehaviour
 
         //포지션값 수정
         _position += new Vector2Int(moveDistance, 0);
+
+        if(_position.x <= 0)
+        {
+            _player.TakeDamage(_power);
+            Dead();
+            if(_player.CurHp <= 0)
+            {
+                InGameManager.Instance.SetGameResultPanelActiveTrue("GameOver");
+            }
+        }
     }
 
     public void TakeDamage(float damage)
@@ -83,7 +95,7 @@ public class Monster : MonoBehaviour
         InGameManager.Instance.KillCount += 1;
         if(InGameManager.Instance.KillCount >= InGameManager.Instance.MonsterCount)
         {
-            InGameManager.Instance.SetGameClearPanelActive(true);
+            InGameManager.Instance.SetGameResultPanelActiveTrue("GameClear");
         }
     }
 

@@ -110,6 +110,7 @@ public class StageManager : Singleton<StageManager>
         {
             string json = File.ReadAllText(filePath);
             _currentStage = JsonUtility.FromJson<Stage>(json);
+            OnStageDataLoaded?.Invoke();
             Debug.Log("Stage data loaded successfully.");
         }
         else

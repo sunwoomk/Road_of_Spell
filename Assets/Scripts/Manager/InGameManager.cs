@@ -51,6 +51,12 @@ public class InGameManager : Singleton<InGameManager>
         }
     }
 
+    protected override void Awake()
+    {
+        base.Awake();
+        StageManager.Instance.OnStageDataLoaded += OnStageDataLoaded;
+    }
+
     //임시로 Start함수에서 호출
     private void Start()
     {
@@ -67,14 +73,21 @@ public class InGameManager : Singleton<InGameManager>
         SetPlayer(_playerName);
         SetSkillPanel(_playerSkills);
         SetGameResultPanel();
-        //StageManager.Instance.SpawnMonsters();
-        #if UNITY_ANDROID
-            StageManager.Instance.OnStageDataLoaded += OnStageDataLoaded;
-        #else
-            // PC 환경에서는 LoadStageJson() 동기 호출하므로 바로 진행 가능
-            StageManager.Instance.SpawnMonsters();
-        #endif
 
+        if (StageManager.Instance.CurrentStage != null)
+        {
+            OnStageDataLoaded();  // 이미 데이터가 로드돼 있으면 몬스터 스폰 직접 호출
+        }
+
+        //#if UNITY_ANDROID
+        //    StageManager.Instance.OnStageDataLoaded += OnStageDataLoaded;
+        //#else
+        //    // PC 환경에서는 LoadStageJson() 동기 호출하므로 바로 진행 가능
+        //    StageManager.Instance.SpawnMonsters();
+        //#endif
+        //StageManager.Instance.OnStageDataLoaded += OnStageDataLoaded;
+
+        //몬스터 카운트 등록하기
         MonsterCount = StageManager.Instance.CurrentStage.monsterSpawns.Count;
     }
 

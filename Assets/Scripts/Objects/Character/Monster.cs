@@ -67,10 +67,13 @@ public class Monster : MonoBehaviour
         //포지션값 수정
         _position += new Vector2Int(moveDistance, 0);
 
+        //타일 마지막 칸에 도달하면 플레이어에게 데미지
         if(_position.x <= 0)
         {
             _player.TakeDamage(_power);
             Dead();
+
+            //플레이어의 체력이 0 아래로 떨어지면 GameOver
             if(_player.CurHp <= 0)
             {
                 InGameManager.Instance.SetGameResultPanelActiveTrue("GameOver");
@@ -92,7 +95,11 @@ public class Monster : MonoBehaviour
         _animator.SetTrigger("Dead");
         _player.AddExp(_dropExp);
         StartCoroutine(WaitAndDestroy());
+
+        //죽을때마다 KillCount 증가
         InGameManager.Instance.KillCount += 1;
+
+        //KillCount가 MonsterCount를 넘으면 GameClear
         if(InGameManager.Instance.KillCount >= InGameManager.Instance.MonsterCount)
         {
             InGameManager.Instance.SetGameResultPanelActiveTrue("GameClear");

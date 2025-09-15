@@ -23,7 +23,7 @@ public class PlayerHpPanel : MonoBehaviour
 
     private void Update()
     {
-        //충분히 업데이트 호출 안하고 구현 가능
+        //업데이트 함수가 아니어도 구현 가능할듯?
         for (int i = 0; i < _activePlayerHp.Count; i++)
         {
             _activePlayerHp[i].SetActive(i < _player.CurHp);

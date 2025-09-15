@@ -26,7 +26,8 @@ public class InGameManager : Singleton<InGameManager>
     private void Start()
     {
         _inGameBackground = GameObject.Find("InGameBackground");
-        _inGameBackground.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Textures/AreaImages/" + GameDataManager.Instance.StageName);
+        _inGameBackground.GetComponent<SpriteRenderer>().sprite = 
+            Resources.Load<Sprite>("Textures/AreaImages/" + GameDataManager.Instance.StageName);
 
         _playerName = GameDataManager.Instance.PlayerName;
         _playerSkills = GameDataManager.Instance.SkillNames;

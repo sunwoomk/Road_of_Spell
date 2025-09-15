@@ -1,6 +1,8 @@
 using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class InGameManager : Singleton<InGameManager>
 {
@@ -12,7 +14,14 @@ public class InGameManager : Singleton<InGameManager>
 
     private GameObject _inGameBackground;
 
+    private GameObject _gameClearPanel;
+
     private string _playerName;
+
+    [SerializeField]
+    private int _monsterCount;
+    [SerializeField]
+    private int _killCount;
 
     private List<string> _playerSkills = new List<string>(); 
     private List<GameObject> _skillLevelUpButtons = new List<GameObject>();
@@ -21,6 +30,26 @@ public class InGameManager : Singleton<InGameManager>
     public Player Player { get { return _player; } }
 
     public GameObject SkillRangePanel { get { return _skillRangePanel; } }
+
+    public int MonsterCount
+    {
+        get { return _monsterCount; }
+        set 
+        { 
+            _monsterCount = value;
+            Debug.Log("MonsterCount = " + value);
+        }
+    }
+
+    public int KillCount
+    {
+        get { return _killCount; }
+        set 
+        { 
+            _killCount = value;
+            Debug.Log("KillCount = " + value);
+        }
+    }
 
     //임시로 Start함수에서 호출
     private void Start()
@@ -34,8 +63,10 @@ public class InGameManager : Singleton<InGameManager>
 
         _canvas = GameObject.Find("Canvas");
         _skillRangePanel = GameObject.Find("SkillRangePanel");
+
         SetPlayer(_playerName);
         SetSkillPanel(_playerSkills);
+        SetGameClearPanel();
         //StageManager.Instance.SpawnMonsters();
         #if UNITY_ANDROID
             StageManager.Instance.OnStageDataLoaded += OnStageDataLoaded;
@@ -48,6 +79,7 @@ public class InGameManager : Singleton<InGameManager>
     private void OnStageDataLoaded()
     {
         StageManager.Instance.SpawnMonsters();
+        MonsterCount = StageManager.Instance.CurrentStage.monsterSpawns.Count;
         StageManager.Instance.OnStageDataLoaded -= OnStageDataLoaded;
     }
 
@@ -74,6 +106,24 @@ public class InGameManager : Singleton<InGameManager>
         inGameSkillPanelScript.CreateSkillSelectButton();
     }
 
+    private void SetGameClearPanel()
+    {
+        _gameClearPanel = _canvas.transform.Find("GameClearPanel").gameObject;
+        _gameClearPanel.SetActive(false);
+        Button worldMapButton = _gameClearPanel.transform.Find("WorldMapButton").gameObject.GetComponent<Button>();
+        worldMapButton.onClick.AddListener(LoadWorldMapScene);
+    }
+
+    private void LoadWorldMapScene()
+    {
+        SceneManager.LoadScene("WorldMapScene");
+    }
+
+    public void SetGameClearPanelActive(bool isActive) 
+    {
+        _gameClearPanel.SetActive(isActive);
+    }
+
     public void AddSkillLevelUpButton(GameObject button)
     {
         _skillLevelUpButtons.Add(button);
@@ -86,4 +136,6 @@ public class InGameManager : Singleton<InGameManager>
             button.SetActive(isActive);
         }
     }
+
+
 }

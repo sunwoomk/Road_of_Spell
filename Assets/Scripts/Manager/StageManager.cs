@@ -35,6 +35,8 @@ public class StageManager : Singleton<StageManager>
     public delegate void StageDataLoadedHandler();
     public event StageDataLoadedHandler OnStageDataLoaded;
 
+    public Stage CurrentStage { get { return _currentStage; } }
+
     protected override void Awake()
     {
         base.Awake();
@@ -56,6 +58,7 @@ public class StageManager : Singleton<StageManager>
         _endTurnButton.onClick.AddListener(TurnEnd);
         _currentRoundText = _canvas.transform.Find("CurrentRound").transform.Find("CurrentRoundText").GetComponent<TextMeshProUGUI>();
         _currentRoundText.text = _currentRoundCount.ToString();
+        //InGameManager.Instance.MonsterCount = _currentStage.monsterSpawns.Count;
     }
 
     public void SetPlayer(Player player)
@@ -131,6 +134,7 @@ public class StageManager : Singleton<StageManager>
             // JSON 파싱 후 스테이지 데이터 저장 및 이벤트 호출
             string json = www.downloadHandler.text;
             _currentStage = JsonUtility.FromJson<Stage>(json);
+            //InGameManager.Instance.MonsterCount = _currentStage.monsterSpawns.Count;
             OnStageDataLoaded?.Invoke();
         }
     }

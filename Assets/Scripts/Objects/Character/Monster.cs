@@ -80,6 +80,11 @@ public class Monster : MonoBehaviour
         _animator.SetTrigger("Dead");
         _player.AddExp(_dropExp);
         StartCoroutine(WaitAndDestroy());
+        InGameManager.Instance.KillCount += 1;
+        if(InGameManager.Instance.KillCount >= InGameManager.Instance.MonsterCount)
+        {
+            InGameManager.Instance.SetGameClearPanelActive(true);
+        }
     }
 
     private IEnumerator WaitAndDestroy()

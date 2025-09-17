@@ -13,9 +13,4 @@ public class Tile : MonoBehaviour
     {
         _tilePos = tilePos;
     }
-
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-
-    }
 }

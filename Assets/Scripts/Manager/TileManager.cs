@@ -67,7 +67,7 @@ public class TileManager : Singleton<TileManager>
         SetSkillPreviewActive(false);
     }
 
-    //스킬 타겟 업데이트
+    //스킬 타겟 중심 좌표 업데이트
     public void UpdateCurSpellTilePos(Vector2Int tilePos, List<Vector2Int> rangeOffsets)
     {
         _spellTargetCenterPos = tilePos;
@@ -101,10 +101,12 @@ public class TileManager : Singleton<TileManager>
         // _spellTargetPos를 중심으로 rangeOffsets 더한 타일들만 활성화
         foreach (Vector2Int offset in rangeOffsets)
         {
-            Vector2Int targetPos = new Vector2Int(_spellTargetCenterPos.x + offset.x, _spellTargetCenterPos.y + offset.y);
+            Vector2Int targetPos = new Vector2Int
+                (_spellTargetCenterPos.x + offset.x, _spellTargetCenterPos.y + offset.y);
             if (_tiles.ContainsKey(targetPos))
             {
-                GameObject overlay = _tiles[targetPos].transform.Find("SkillPreviewOverlay").gameObject;
+                Transform tileTransform = _tiles[targetPos].transform;
+                GameObject overlay = tileTransform.Find("SkillPreviewOverlay").gameObject;
                 overlay.SetActive(true);
             }
         }

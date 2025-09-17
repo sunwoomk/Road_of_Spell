@@ -138,5 +138,7 @@ public class StagePreview : MonoBehaviour
         File.WriteAllText(Application.dataPath + "/Resources/Stages/" + text + ".json", json);
         //안드로이드 전용
         File.WriteAllText(Application.dataPath + "/StreamingAssets/" + text + ".json", json);
+
+        Debug.Log("Stage Created! : " + text);
     }
 }

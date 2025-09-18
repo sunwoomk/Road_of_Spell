@@ -276,19 +276,25 @@ public class PlayerSkillButton : MonoBehaviour, IPointerDownHandler, IDragHandle
             }
         }
 
+        //이펙트 타입이 "Single"이면 중앙에 이펙트 하나 호출
         if (_effectType == "Single")
         {
-            Vector3 spawnWorldPos = TileManager.Instance.GetTileWorldPosition(_center);
+            Vector3 spawnWorldPos = 
+                TileManager.Instance.GetTileWorldPosition(_center);
             ShowEffect(spawnWorldPos);
         }
+
+        //이펙트 타입이 "Multy"이면 피격될 위치에 전부 이펙트 호출
         else if(_effectType == "Multy")
         {
             foreach (Vector2Int pos in _spellHitPositions)
             {
-                Vector3 spawnWorldPos = TileManager.Instance.GetTileWorldPosition(pos);
+                Vector3 spawnWorldPos = 
+                    TileManager.Instance.GetTileWorldPosition(pos);
                 ShowEffect(spawnWorldPos);
             }
         }
+
         else if(_effectType == "Global")
         {
             Vector3 spawnWorldPos = Vector3.zero;            

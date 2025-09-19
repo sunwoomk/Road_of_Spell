@@ -84,7 +84,7 @@ public class Player : MonoBehaviour
             _curExp = 0;
             return;
         }
-        _curExp += exp * 10;
+        _curExp += exp;
         _expBar.StartMoveExpBar();
 
         while (_curExp >= _maxExp && _level < _maxLevel)
